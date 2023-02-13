@@ -3,7 +3,7 @@
 import os
 import sys
 
-sys.setrecursionlimit(5000)
+sys.setrecursionlimit(500000)
 
 def main():
     """Run administrative tasks."""
