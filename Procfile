@@ -1,1 +1,2 @@
-web: gunicorn CS3240F18.wsgi
+release: python manage.py migrate
+web: gunicorn project-a-08.wsgi
