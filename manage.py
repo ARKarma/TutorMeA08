@@ -3,8 +3,6 @@
 import os
 import sys
 
-sys.setrecursionlimit(500000)
-
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ProjectA08.settings")
