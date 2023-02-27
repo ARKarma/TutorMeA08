@@ -1,6 +1,1 @@
-# Django Practice Assessment
-
-__Name:__
-
-__Computing ID:__
-
+# Tutor Me A-08
