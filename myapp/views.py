@@ -34,6 +34,9 @@ def fetch_courses():
 
 
 def course_list(request):
+    if not Course.objects.all():
+        fetch_courses()
+    
     query = request.GET.get('q')
     print(query)
     if query:
