@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     'social_django',
-    'ProjectA08',
+    'myapp',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
-ROOT_URLCONF = "ProjectA08.urls"
+ROOT_URLCONF = "myapp.urls"
 
 TEMPLATES = [
     {
