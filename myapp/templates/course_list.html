@@ -36,27 +36,26 @@
             </div>
           </nav>
     <!-- Contents Starts Here-->
-	<h1>Data from API:</h1>
-    <table>
-        <thead>
-            <tr>
-                {% for header in headers %}
-                    <th>{{ header }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in records %}
-                <tr>
-                    {% for value in record %}
-                        <td>{{ value }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+	<h1>Course List</h1>
+
+  <form method="get">
+    <input type="text" name="q" placeholder="Search by course title">
+    <button type="submit">Search</button>
+  </form>
+
+  <ul>
+    {% for course in courses %}
+      <li>
+        <h2>{{ course.class_title }}</h2>
+        <p>Class number: {{ course.class_number }}</p>
+        <p>Instructor: {{ course.instructor }}</p>
+      </li>
+    {% empty %}
+      <p>No courses found.</p>
+    {% endfor %}
+  </ul>
     <!-- Contents Ends Here-->
-	<footer class="bg-primary text-white p-3 fixed-bottom">
+	<footer class="bg-primary text-white p-3">
             <div class="container">
               <div class="row">
                 <div class="col-md-6">

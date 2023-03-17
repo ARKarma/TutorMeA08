@@ -12,5 +12,5 @@ urlpatterns = [
     path("", views.home, name='home'),
     path('student-home/', views.student_home, name='student-home'),
     path('tutor-home/', views.tutor_home, name='tutor-home'),
-    path('classes/', views.classes, name='classes'),
+    path('classes/', views.course_list, name='course_list'),
 ]
