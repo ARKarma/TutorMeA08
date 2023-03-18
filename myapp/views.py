@@ -26,21 +26,17 @@ def fetch_courses():
             term=record[11],
             term_desc=record[12]
         )
-        course.save()  # save the course instance to the database
+        course.save()  
         courses.append(course)
-
-    print(f"Fetched {len(courses)} courses")
     return courses
 
 
 def course_list(request):
     query = request.GET.get('q')
-    print(query)
     if query:
         courses = Course.objects.filter(Q(class_title__icontains=query) | Q(class_number__icontains=query))
     else:
         courses = Course.objects.all()
-    print(courses)
     return render(request, 'course_list.html', {'courses': courses})
 
 
