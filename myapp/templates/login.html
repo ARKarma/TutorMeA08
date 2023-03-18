@@ -22,6 +22,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-light" href="{% url 'home'%}">Home</a>
                     </li>
+                    <li class="nav-item">
+                      <a class="nav-link text-light" href="{% url 'course_list'%}">Seach Classes</a>
+                    </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                     <a class="nav-link text-light" href="{% url 'logout'%}">Log Out</a>
