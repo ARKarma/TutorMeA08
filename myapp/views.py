@@ -40,7 +40,7 @@ def course_list(request):
     query = request.GET.get('q')
     print(query)
     if query:
-        courses = Course.objects.filter(Q(class_title__icontains=query) | Q(class_number__icontains=query))
+        courses = Course.objects.filter(Q(subject__icontains=query) | Q(catalog_number__icontains=query)) #| Q(class_title__icontains=query) | Q(class_number__icontains=query))
     else:
         courses = Course.objects.all()
     print(courses)
