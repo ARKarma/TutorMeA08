@@ -14,6 +14,7 @@ def fetch_courses():
         course = Course(
             subject=record[0],
             catalog_number=record[1],
+            sub_and_cat =record[0] + " " + record[1],
             class_section=record[2],
             class_number=record[3],
             class_title=record[4],
@@ -40,7 +41,8 @@ def course_list(request):
     query = request.GET.get('q')
     print(query)
     if query:
-        courses = Course.objects.filter(Q(subject__icontains=query) | Q(catalog_number__icontains=query)) #| Q(class_title__icontains=query) | Q(class_number__icontains=query))
+        courses = Course.objects.filter(Q(sub_and_cat__icontains=query) | Q(subject__icontains=query) | Q(catalog_number__icontains=query) | Q(class_title__icontains=query) | Q(class_number__icontains=query))
+        #courses = Course.objects.filter(Q(subject__icontains=query) | Q(catalog_number__icontains=query) | Q(sub_and_cat__icontains=query)) #| Q(class_title__icontains=query) | Q(class_number__icontains=query))
     else:
         courses = Course.objects.all()
     print(courses)
