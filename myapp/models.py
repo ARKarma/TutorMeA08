@@ -4,7 +4,6 @@ from django.db import models
 class Course(models.Model):
     subject = models.CharField(max_length=255)
     catalog_number = models.CharField(max_length=255)
-    sub_and_cat = models.CharField(default="", max_length=255)
     class_section = models.CharField(max_length=255)
     class_number = models.IntegerField()
     class_title = models.CharField(max_length=255)
