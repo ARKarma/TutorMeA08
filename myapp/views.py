@@ -6,41 +6,43 @@ from django.db.models import Q
 
 
 def fetch_courses():
-    url = 'https://api.devhub.virginia.edu/v1/courses'
-    data = requests.get(url).json()
-
+    #url = 'https://api.devhub.virginia.edu/v1/courses'
+    #url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearchOptions?institution=UVA01&term=1232'
     courses = []
-    for record in data['class_schedules']['records']:
-        course = Course(
-            subject=record[0],
-            catalog_number=record[1],
-            class_section=record[2],
-            class_number=record[3],
-            class_title=record[4],
-            class_topic_formal_desc=record[5],
-            instructor=record[6],
-            enrollment_capacity=record[7],
-            meeting_days=record[8],
-            meeting_time_start=record[9],
-            meeting_time_end=record[10],
-            term=record[11],
-            term_desc=record[12]
-        )
-        course.save()  # save the course instance to the database
-        courses.append(course)
+    url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
+    for x in range(44):
+        data = requests.get(url + '&page=' + str(x))
+        for c in data.json():
+            course = Course(
+                subject= c['subject'],
+                catalog_number=c['catalog_nbr'],
+                sub_and_cat=c['subject']+ " " + c['catalog_nbr'],
+                class_section=c['class_section'],
+                class_number=c['class_nbr'],
+                class_title=c['descr'],
+                #class_topic_formal_desc=record[5],
+                instructor=c['instructors'],
+                #enrollment_capacity=record[7],
+                #meeting_days=record[8],
+                #meeting_time_start=record[9],
+                #meeting_time_end=record[10],
+                #term=record[11],
+                #term_desc=record[12]
+            )
+            course.save()  # save the course instance to the database
+            courses.append(course)
+
 
     print(f"Fetched {len(courses)} courses")
     return courses
 
 
 def course_list(request):
-    # if not Course.objects.all():
-    #     fetch_courses()
-    
+
     query = request.GET.get('q')
     print(query)
     if query:
-        courses = Course.objects.filter(Q(subject__icontains=query) | Q(catalog_number__icontains=query)) #| Q(class_title__icontains=query) | Q(class_number__icontains=query))
+        courses = Course.objects.filter(Q(sub_and_cat__icontains=query) | Q(subject__icontains=query) | Q(catalog_number__icontains=query) | Q(class_title__icontains=query) | Q(class_number__icontains=query))
     else:
         courses = Course.objects.all()
     print(courses)
