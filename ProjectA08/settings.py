@@ -79,7 +79,7 @@ WSGI_APPLICATION = "ProjectA08.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if 'pytest' in sys.modules:
+if 'pytest' in sys.modules or 'test' in sys.argv:
     DATABASES = {
         'default':{
             'ENGINE': 'django.db.backends.sqlite3',
