@@ -4,7 +4,6 @@ import requests
 from myapp.models import Course
 from django.db.models import Q
 
-
 def fetch_courses():
     #courses = []
     url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
@@ -34,16 +33,12 @@ def fetch_courses():
     #print(f"Fetched {len(courses)} courses")
     return
 
-
 def course_list(request):
-
     query = request.GET.get('q')
-    print(query)
     if query:
         courses = Course.objects.filter(Q(sub_and_cat__icontains=query) | Q(subject__icontains=query) | Q(catalog_number__icontains=query) | Q(class_title__icontains=query) | Q(class_number__icontains=query))
     else:
         courses = Course.objects.all()
-    print(courses)
     return render(request, 'course_list.html', {'courses': courses})
 
 
