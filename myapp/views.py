@@ -8,7 +8,7 @@ def fetch_courses():
     #courses = []
     url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
     
-    for x in range(30,35):
+    for x in range(35,40):
         data = requests.get(url + '&page=' + str(x))
         for c in data.json():
             course = Course(
