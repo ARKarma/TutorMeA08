@@ -5,24 +5,15 @@ from myapp.models import Course
 from django.db.models import Q
 
 
-def fetch_courses(page_size=100):
+def fetch_courses():
     #url = 'https://api.devhub.virginia.edu/v1/courses'
     #url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearchOptions?institution=UVA01&term=1232'
     courses = []
     url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
     
-    page_num = 1
-    while True:
-        params = {
-            'page': page_num,
-            'page_size': page_size
-        }
-        response = requests.get(url + '&page=' + str(page_num))
-        #data = response.json()
-        if not response:
-            break
-        
-        for c in response.json():
+    for x in range(44):
+        data = requests.get(url + '&page=' + str(x))
+        for c in data.json():
             course = Course(
                 subject= c['subject'],
                 catalog_number=c['catalog_nbr'],
@@ -39,17 +30,21 @@ def fetch_courses(page_size=100):
                 #term=record[11],
                 #term_desc=record[12]
             )
-            #course.save()  # save the course instance to the database
+            course.save()  # save the course instance to the database
             courses.append(course)
-
-        page_num += 1
     
-    Course.objects.bulk_create(courses)
-
-    
-    # for x in range(44):
-    #     data = requests.get(url + '&page=' + str(x))
-    #     for c in data.json():
+    # page_num = 1
+    # while True:
+    #     params = {
+    #         'page': page_num,
+    #         'page_size': page_size
+    #     }
+    #     response = requests.get(url + '&page=' + str(page_num))
+    #     #data = response.json()
+    #     if not response:
+    #         break
+        
+    #     for c in response.json():
     #         course = Course(
     #             subject= c['subject'],
     #             catalog_number=c['catalog_nbr'],
@@ -66,9 +61,12 @@ def fetch_courses(page_size=100):
     #             #term=record[11],
     #             #term_desc=record[12]
     #         )
-    #         course.save()  # save the course instance to the database
+    #         #course.save()  # save the course instance to the database
     #         courses.append(course)
 
+    #     page_num += 1
+    
+    # Course.objects.bulk_create(courses)
 
     print(f"Fetched {len(courses)} courses")
     return courses
