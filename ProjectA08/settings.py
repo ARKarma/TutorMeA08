@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,12 +79,24 @@ WSGI_APPLICATION = "ProjectA08.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if 'test' in sys.argv:
+    DATABASES = {
+        'default':{
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'dcigm3naoaqlso',
+            'USER': 'husefazfpqxnbr',
+            'PASSWORD': '61557300d5b7796b9610e363496a198f49bc271847451a045a7ea333364cb64a',
+            'HOST': 'ec2-3-230-122-20.compute-1.amazonaws.com',
+            'PORT': '5432',
+         }
+    }
 
 
 # Password validation
