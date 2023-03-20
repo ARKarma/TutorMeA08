@@ -6,6 +6,9 @@ from django.db.models import Q
 
 
 def fetch_courses(page_size=100):
+    delete_courses = Course.objects.all()
+    delete_courses.delete()
+    
     url = 'https://api.devhub.virginia.edu/v1/courses'
     data = requests.get(url).json()
 
@@ -26,12 +29,16 @@ def fetch_courses(page_size=100):
             term=record[11],
             term_desc=record[12]
         )
-        course.save()  
-        courses.append(course)
+
+        if course.term_desc == "2023 Spring":
+            course.save()
+            courses.append(course)
 
     return courses
 
+
 def course_list(request):
+    fetch_courses()
     query = request.GET.get('q')
     if query:
         courses = Course.objects.filter(Q(class_title__icontains=query) | Q(class_number__icontains=query))
