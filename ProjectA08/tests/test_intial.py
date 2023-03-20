@@ -20,3 +20,10 @@ def test_course_create():
     assert course.subject == "AAS"
     assert course.catalog_number == "3710"
     assert course.class_number!=12799
+
+@pytest.mark.django_db
+def test_course_in_database():
+    course = Course.objects.filter(class_number="cs 3240")
+    assert course.subject == "CS"
+    assert course.catalog_number == "3240"
+
