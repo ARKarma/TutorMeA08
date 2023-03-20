@@ -4,3 +4,5 @@ django-heroku
 social-auth-app-django
 dj-database-url
 psycopg2
+pytest
+pytest-django
