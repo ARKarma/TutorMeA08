@@ -50,8 +50,8 @@
     {% for course in courses %}
       <li>
         <h2>{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
-        <p>Class number: {{ course.class_number }}</p>
-        <p>Instructor: {{ course.instructor }}</p>
+        <!-- <p>Class number: {{ course.class_number }}</p>
+        <p>Instructor: {{ course.instructor }}</p> -->
       </li>
     {% empty %}
       <p>No courses found.</p>
