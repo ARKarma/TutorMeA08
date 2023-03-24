@@ -2,37 +2,44 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import requests
 from myapp.models import Course
+from myapp.models import Session
 from django.db.models import Q
+from myapp.forms import SessionForm
+from django.contrib import messages
+
 
 def fetch_courses():
-    #courses = []
+    # courses = []
     url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
-    
-    for x in range(40,44):
+
+    for x in range(40, 44):
         data = requests.get(url + '&page=' + str(x))
         for c in data.json():
-            if Course.objects.filter(sub_and_cat__icontains=c['subject']+ " " + c['catalog_nbr']):
+            if Course.objects.filter(sub_and_cat__icontains=c['subject'] + " " + c['catalog_nbr']):
                 pass
             else:
                 course = Course(
-                    subject= c['subject'],
+                    subject=c['subject'],
                     catalog_number=c['catalog_nbr'],
-                    sub_and_cat=c['subject']+ " " + c['catalog_nbr'],
+                    sub_and_cat=c['subject'] + " " + c['catalog_nbr'],
                     class_section=c['class_section'],
                     class_number=c['class_nbr'],
                     class_title=c['descr'],
                     instructor=c['instructors'],
                 )
                 course.save()  # save the course instance to the database
-            #courses.append(course)
+            # courses.append(course)
 
-    #print(f"Fetched {len(courses)} courses")
+    # print(f"Fetched {len(courses)} courses")
     return
+
 
 def course_list(request):
     query = request.GET.get('q')
     if query:
-        courses = Course.objects.filter(Q(sub_and_cat__icontains=query) | Q(subject__icontains=query) | Q(catalog_number__icontains=query) | Q(class_title__icontains=query))
+        courses = Course.objects.filter(
+            Q(sub_and_cat__icontains=query) | Q(subject__icontains=query) | Q(catalog_number__icontains=query) | Q(
+                class_title__icontains=query))
     else:
         courses = Course.objects.all()
     return render(request, 'course_list.html', {'courses': courses})
@@ -64,3 +71,18 @@ def student_home(request):
 
 def tutor_home(request):
     return render(request, 'tutor_home.html')
+
+
+def post_session(request):
+    if request.method == 'POST':
+        form = SessionForm(request.POST)
+        if form.is_valid():
+            session = form.save(commit=False)
+            session.tutor = request.user
+            session.save()
+            messages.success(request, 'Session posted successfully.')
+            return redirect('tutor-home')
+    else:
+        form = SessionForm()
+
+    return render(request, 'post_session.html', {'form': form})
