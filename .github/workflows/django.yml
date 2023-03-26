@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "pytest"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "pytest"]
 
 jobs:
   build:
@@ -27,3 +27,6 @@ jobs:
       - name: Run Tests
         run: |
           python manage.py test
+      - name: Test with pytest
+        working-directory: ./ProjectA08
+        run: pytest -vv
