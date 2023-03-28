@@ -34,6 +34,11 @@ class User(models.Model):
         default=STUDENT
     )
     #Maybe make separate user models for student and tutor; maybe both have foreign keys to the overall userbase model?
+    
+    # student model 
+    
+    
+    # tutor model 
     class Meta:
         app_label='myapp'
 
