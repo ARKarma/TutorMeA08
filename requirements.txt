@@ -4,5 +4,6 @@ django-heroku
 social-auth-app-django
 dj-database-url
 psycopg2
+django-bootstrap-v5==1.0.11
 pytest
 pytest-django

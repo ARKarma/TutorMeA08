@@ -1,4 +1,7 @@
 <!doctype html>
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -42,10 +45,25 @@
 	<div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
 		<div class="card">
 			<div class="card-body py-5 px-md-3 text-center">
-       <h1>Select Your Role</h1>
+       <h1>Registration Information</h1>
 	<form action="{% url 'home' %}" method="post">
 		{% csrf_token %}
-		<div class="row my-5">
+        <fieldset>
+            <div class="row mb-3 justify-content-start">
+                <div class="col-6">
+                        <label for="inputFirstName" class="col-sm-8 col-form-label">First Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="first_name" id="inputFirstName" placeholder="First Name">
+                        </div>
+                </div>
+                <div class="col-6">
+                        <label for="inputLastName" class="col-sm-8 col-form-label">Last Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="last_name" id="inputLastName" placeholder="Last Name">
+                        </div>
+                </div>
+            </div>
+		<div class="row mb-6">
 			<div class="col-6">
 				<label>
 			<input type="radio" name="role" value="tutor"> I am a Tutor
@@ -58,12 +76,13 @@
 			</div>
 	</div>
 		<button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </fieldset>
 	</form>
 		</div>
 	</div>
 	</div>
     <!-- Contents Ends Here-->
-	<footer class="bg-primary text-white p-3 fixed-bottom">
+	<footer class="bg-primary text-white fixed-bottom">
             <div class="container">
               <div class="row">
                 <div class="col-md-6">
