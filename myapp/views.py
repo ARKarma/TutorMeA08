@@ -49,7 +49,7 @@ def course_list(request):
 def view_sessions(request, pk):
       course = Course.objects.get(pk=pk)
       sessions = Session.objects.filter(class_title=pk)
-      return render(request, 'course_session_view.html', {'course': course}, {'sessions': sessions})
+      return render(request, 'course_session_view.html', {'course': course, 'sessions': sessions})
 
 
 # class SessionsView(generic.DetailView):
