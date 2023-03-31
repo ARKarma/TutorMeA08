@@ -47,9 +47,9 @@
         {% csrf_token %}
           <!-- Start Input Title -->
         <div class="form-group">
-          <label for="title">Title</label>
-          <input type="text" class="form-control" id="title" name="title" placeholder="Session Title" required />
-          <small class="form-text text-muted">Please give a title for your session </small>
+          <label for="title">Class</label>
+          <input type="text" class="form-control" id="class_title" name="class_title" placeholder="Class" required />
+          <small class="form-text text-muted">Please enter the class you are tutoring for (e.g. CS 3240) </small>
         </div>
         <!-- End Input Title -->
 
@@ -63,9 +63,9 @@
 
         <!-- Start Input Price -->
         <div class="form-group">
-          <label for="price">Price</label>
+          <label for="price">Hourly Rate</label>
           <input type="number" class="form-control" id="price" name="price" placeholder="0.00" min="'0" step="0.5" required />
-          <small class="form-text text-muted"> Please give a price for your session </small>
+          <small class="form-text text-muted"> Please give your hourly rate in USD </small>
         </div>
         <!-- End Input Price -->
 

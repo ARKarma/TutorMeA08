@@ -7,13 +7,14 @@ from myapp.models import Course, User
 from django.db.models import Q
 from myapp.forms import SessionForm
 from django.contrib import messages
-
+from django.views import generic
+from django.shortcuts import get_object_or_404
 
 def fetch_courses():
     # courses = []
     url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
 
-    for x in range(40, 44):
+    for x in range(1, 3):
         data = requests.get(url + '&page=' + str(x))
         for c in data.json():
             if Course.objects.filter(sub_and_cat__icontains=c['subject'] + " " + c['catalog_nbr']):
@@ -44,6 +45,37 @@ def course_list(request):
     else:
         courses = Course.objects.all()
     return render(request, 'course_list.html', {'courses': courses})
+
+def view_sessions(request, pk):
+      course = Course.objects.get(pk=pk)
+      sessions = Session.objects.filter(class_title=pk)
+      return render(request, 'course_session_view.html', {'course': course}, {'sessions': sessions})
+
+
+# class SessionsView(generic.DetailView):
+#     # model = Session
+
+#     template_name = 'course_session_view.html'
+
+#     def get_queryset(self):
+#         self.course = get_object_or_404(Course, name=self.kwargs['course'])
+#         return Session.objects.filter(class_title=self.course)
+    
+#     def get_context_data(self, **kwargs):
+#         # Call the base implementation first to get a context
+#         context = super().get_context_data(**kwargs)
+#         # Add in the publisher
+#         context['course'] = self.course
+#         return context
+    # course = 
+    # template_name = 'course_session_view.html'
+    
+
+    # def get_queryset(self):
+    #     """
+    #     Excludes any questions that aren't published yet.
+    #     """
+    #     return Session.objects.filter(class_title=sub_and_cat)
 
 
 def login(request):

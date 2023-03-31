@@ -23,6 +23,9 @@
                         <a class="nav-link text-light" href="{% url 'home'%}">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-light" href="{% url 'post-session'%}">Post Session</a>
+                    </li>
+                    <li class="nav-item">
                       <a class="nav-link text-light" href="{% url 'course_list'%}">Seach Classes</a>
                     </li>
                     {% if user.is_authenticated %}
@@ -39,28 +42,34 @@
             </div>
           </nav>
     <!-- Contents Starts Here-->
-	<h1>Search Spring 2023 Undergraduate Classes</h1>
-
-  <form method="get">
-    <input type="text" name="q" placeholder="Search by subject, catalog number, course title, or class number">
-    <button type="submit">Search</button>
-  </form>
-
   <ul>
-    {% for course in courses %}
+    <h2>{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
+    {% for session in sessions %}
       <li>
-        <h2>{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
-        <a href="{% url 'sessions' course.pk %}">Click here for available sessions </a>
-        <!-- <p>Class number: {{ course.class_number }}</p>
-        <p>Instructor: {{ course.instructor }}</p> -->
+        <h2>{{ session.tutor }} {{ session.desc }} {{ course.class_title }}</h2>
+        <p>Tutor: {{ session.tutor }}</p>
+        <p>Date: {{ session.date }}</p>
+        <p>Time: {{ session.start_time }} - {{ session.end_time }}</p>
+        <p>Description: {{ session.description }}</p>
+        <p>Hourly Rate: {{ session.price }}</p>
       </li>
     {% empty %}
-      <p>No courses found.</p>
+      <p>No sessions found.</p>
     {% endfor %}
-  </ul>
 
-</div>
+    <!-- {% for course in courses %}
+      <li>
+        <h2>{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2> -->
+        <!-- <p>Class number: {{ course.class_number }}</p>
+        <p>Instructor: {{ course.instructor }}</p> -->
+      <!-- </li> -->
+    <!-- {% empty %}
+      <p>No courses found.</p>
+    {% endfor %} -->
+  </ul>
     <!-- Contents Ends Here-->
+
+
 	<footer class="bg-primary text-white p-3">
             <div class="container">
               <div class="row">
