@@ -45,16 +45,18 @@
       <!-- Start Form -->
       <form method="post" action="{% url 'post-session' %}">
         {% csrf_token %}
-          <!-- Start Input Title -->
-        <div class="form-group">
-          <label for="title">Class</label>
-          <input type="text" class="form-control" id="class_title" name="class_title" placeholder="Class" required />
-          <small class="form-text text-muted">Please enter the class you are tutoring for (e.g. CS 3240) </small>
-        </div>
-        <!-- End Input Title -->
+          <!-- Start Course Selection -->
+          <div class="form-group m-1">
+            <label for="course">Course</label>
+            {{ form.course }}
+              <div>
+                <small class="form-text text-muted">Please choose the class you are tutoring for </small>
+                  </div>
+          </div>
+          <!-- End Course Selection -->
 
         <!-- Start Input Description -->
-        <div class="form-group">
+        <div class="form-group m-1">
           <label for="description">Description</label>
           <input type="text" class="form-control" id="description" name="description" placeholder="Description for Session" required />
           <small class="form-text text-muted"> Please give a description for your session </small>
@@ -62,7 +64,7 @@
         <!-- End Input Description -->
 
         <!-- Start Input Price -->
-        <div class="form-group">
+        <div class="form-group m-1">
           <label for="price">Hourly Rate</label>
           <input type="number" class="form-control" id="price" name="price" placeholder="0.00" min="'0" step="0.5" required />
           <small class="form-text text-muted"> Please give your hourly rate in USD </small>
@@ -70,7 +72,7 @@
         <!-- End Input Price -->
 
         <!-- Start Input Date , Start Time and End Time -->
-        <div class="form-row">
+        <div class="form-row m-1">
           <!-- Start Input Date -->
           <div class="form-group col-md-4">
             <label for="date">Date</label>
@@ -98,7 +100,7 @@
         <!-- End Input Date , Start Time and End Time -->
 
         <!-- Start Session Size -->
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-4 m-1">
             <label for="max_students">Class Size</label>
             <input type="number" class="form-control" id="max_students" name="max_students" required />
             <small class="form-text text-muted">Please choose size for session.</small>

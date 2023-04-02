@@ -1,8 +1,11 @@
 from django import forms
-from .models import Session
+from .models import Session, Course
 
 
 class SessionForm(forms.ModelForm):
+
     class Meta:
         model = Session
-        fields = ['class_title', 'description', 'price', 'date', 'start_time', 'end_time', 'max_students']
+        fields = ['course', 'description', 'price', 'date', 'start_time', 'end_time', 'max_students', ]
+
+    course = forms.ModelChoiceField(queryset=Course.objects.all())

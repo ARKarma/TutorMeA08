@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.views import generic
 from django.shortcuts import get_object_or_404
 
+
 def fetch_courses():
     # courses = []
     url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
@@ -46,10 +47,11 @@ def course_list(request):
         courses = Course.objects.all()
     return render(request, 'course_list.html', {'courses': courses})
 
+
 def view_sessions(request, pk):
-      course = Course.objects.get(pk=pk)
-      sessions = Session.objects.filter(class_title=pk)
-      return render(request, 'course_session_view.html', {'course': course, 'sessions': sessions})
+    course = get_object_or_404(Course, pk=pk)
+    sessions = Session.objects.filter(course=course)
+    return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course})
 
 
 # class SessionsView(generic.DetailView):
@@ -60,22 +62,22 @@ def view_sessions(request, pk):
 #     def get_queryset(self):
 #         self.course = get_object_or_404(Course, name=self.kwargs['course'])
 #         return Session.objects.filter(class_title=self.course)
-    
+
 #     def get_context_data(self, **kwargs):
 #         # Call the base implementation first to get a context
 #         context = super().get_context_data(**kwargs)
 #         # Add in the publisher
 #         context['course'] = self.course
 #         return context
-    # course = 
-    # template_name = 'course_session_view.html'
-    
+# course =
+# template_name = 'course_session_view.html'
 
-    # def get_queryset(self):
-    #     """
-    #     Excludes any questions that aren't published yet.
-    #     """
-    #     return Session.objects.filter(class_title=sub_and_cat)
+
+# def get_queryset(self):
+#     """
+#     Excludes any questions that aren't published yet.
+#     """
+#     return Session.objects.filter(class_title=sub_and_cat)
 
 
 def login(request):
@@ -88,31 +90,31 @@ def index(request):
 
 @login_required
 def home(request):
-	logged_in_user = request.user
-	email= logged_in_user.email
-	try:
-		current_user = User.objects.get(pk=email)
-	except User.DoesNotExist:
-		if request.method == 'POST':
-			role = request.POST.get('role')
-			first_name = request.POST.get('first_name')
-			last_name = request.POST.get('last_name')
-			if role == 'tutor':
-				new_user = User(email=email, first_name=first_name, last_name=last_name, user_role=User.TUTOR)
-				new_user.save()
-				return redirect('tutor-home')
-			elif role == 'student':
-				new_user = User(email=email, first_name=first_name, last_name=last_name, user_role=User.STUDENT)
-				new_user.save()
-				return redirect('student-home')
-		else:
-			return render(request, 'home.html')
+    logged_in_user = request.user
+    email = logged_in_user.email
+    try:
+        current_user = User.objects.get(pk=email)
+    except User.DoesNotExist:
+        if request.method == 'POST':
+            role = request.POST.get('role')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            if role == 'tutor':
+                new_user = User(email=email, first_name=first_name, last_name=last_name, user_role=User.TUTOR)
+                new_user.save()
+                return redirect('tutor-home')
+            elif role == 'student':
+                new_user = User(email=email, first_name=first_name, last_name=last_name, user_role=User.STUDENT)
+                new_user.save()
+                return redirect('student-home')
+        else:
+            return render(request, 'home.html')
 
-	if(current_user!=None):
-		if(current_user.user_role==User.STUDENT):
-			return redirect('student-home')
-		elif(current_user.user_role==User.TUTOR):
-			return redirect('tutor-home')
+    if current_user is not None:
+        if current_user.user_role == User.STUDENT:
+            return redirect('student-home')
+        elif current_user.user_role == User.TUTOR:
+            return redirect('tutor-home')
 
 
 def student_home(request):
@@ -127,8 +129,10 @@ def post_session(request):
     if request.method == 'POST':
         form = SessionForm(request.POST)
         if form.is_valid():
+            course = form.cleaned_data['course']
             session = form.save(commit=False)
             session.tutor = request.user
+            session.course = course
             session.save()
             messages.success(request, 'Session posted successfully.')
             return redirect('tutor-home')
