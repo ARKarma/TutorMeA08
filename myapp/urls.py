@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from myapp import views
 
@@ -14,5 +14,9 @@ urlpatterns = [
     path('tutor-home/', views.tutor_home, name='tutor-home'),
     path('classes/', views.course_list, name='course_list'),
     path('post-session/', views.post_session, name='post-session'),
-    path('course/<str:pk>/', views.view_sessions, name='sessions')
+    path('course/<str:pk>/', views.view_sessions, name='sessions'),
+    path('book-session/<int:session_id>/',
+         views.book_session, name='book-session'),
+    path('booking-confirmation/<str:course_id>/',
+         views.booking_confirmation, name='booking_confirmation'),
 ]

@@ -9,6 +9,8 @@ from myapp.forms import SessionForm
 from django.contrib import messages
 from django.views import generic
 from django.shortcuts import get_object_or_404
+from myapp.forms import BookingForm
+from django.urls import reverse
 
 
 def fetch_courses():
@@ -100,11 +102,13 @@ def home(request):
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             if role == 'tutor':
-                new_user = User(email=email, first_name=first_name, last_name=last_name, user_role=User.TUTOR)
+                new_user = User(email=email, first_name=first_name,
+                                last_name=last_name, user_role=User.TUTOR)
                 new_user.save()
                 return redirect('tutor-home')
             elif role == 'student':
-                new_user = User(email=email, first_name=first_name, last_name=last_name, user_role=User.STUDENT)
+                new_user = User(email=email, first_name=first_name,
+                                last_name=last_name, user_role=User.STUDENT)
                 new_user.save()
                 return redirect('student-home')
         else:
@@ -140,3 +144,31 @@ def post_session(request):
         form = SessionForm()
 
     return render(request, 'post_session.html', {'form': form})
+
+
+@login_required
+def book_session(request, session_id):
+    session = get_object_or_404(Session, id=session_id)
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.session = session
+            booking.user = request.user._wrapped if hasattr(
+                request.user, '_wrapped') else request.user
+            booking.save()
+            messages.success(request, 'Session booked successfully!')
+
+            # Render the booking confirmation template
+            return render(request, 'booking_confirmation.html', {'booking': booking})
+    else:
+        form = BookingForm()
+
+    return render(request, 'book_session.html', {'form': form, 'session': session})
+
+
+@login_required
+def booking_confirmation(request, course_id):
+    if request.method == 'POST':
+        return redirect('course_list')
+    return render(request, 'booking_confirmation.html', {'course_id': course_id})

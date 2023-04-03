@@ -5,7 +5,8 @@ from django.db import models
 class Course(models.Model):
     subject = models.CharField(max_length=255)
     catalog_number = models.CharField(max_length=255)
-    sub_and_cat = models.CharField(default="", max_length=255, primary_key=True)
+    sub_and_cat = models.CharField(
+        default="", max_length=255, primary_key=True)
     class_section = models.CharField(max_length=255)
     class_number = models.CharField(max_length=255)
     class_title = models.CharField(max_length=500)
@@ -47,3 +48,15 @@ class User(models.Model):
 
     def __str__(self):
         return self.first_name+" "+self.last_name
+
+
+class Booking(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    contact = models.CharField(max_length=100)
+    payment = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.session}"
