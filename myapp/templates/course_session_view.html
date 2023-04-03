@@ -54,7 +54,11 @@
         <p>Hourly Rate: {{ session.price }}</p>
         <form method="post" action="{% url 'book-session' session.id %}">
           {% csrf_token %}
-          <button type="submit" class="btn btn-primary">Book a Session</button>
+            {% if user.is_authenticated %}
+                {% if cur_User.user_role == 'STUDENT' %}
+                    <button type="submit" class="btn btn-success"> Book Session </button>
+                {% endif %}
+            {% endif %}
       </form>
       </li>
     {% empty %}

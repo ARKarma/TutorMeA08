@@ -53,6 +53,13 @@ def course_list(request):
 def view_sessions(request, pk):
     course = get_object_or_404(Course, pk=pk)
     sessions = Session.objects.filter(course=course)
+    logged_in_user= request.user
+    try:
+        email= logged_in_user.email
+        current_user= User.objects.get(pk=email)
+        return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course, 'cur_User': current_user})
+    except User.DoesNotExist:
+        return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course, 'cur_User': None})
     return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course})
 
 
