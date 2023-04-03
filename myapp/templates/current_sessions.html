@@ -43,14 +43,33 @@
           </nav>
     <!-- Contents Starts Here-->
     <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
-		<div class="card">
-			<div class="card-body py-5 px-md-3 text-center">
-                <h1> Welcome, Tutor {{cur_User.first_name}}</h1>
-                <a href ="{% url 'current-sessions'%}">
-                    Manage Sessions
-                </a>
-            </div>
-        </div>
+    <ul>
+        {% for booking in bookings %}
+        <li>
+            <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for {{booking.session.course.sub_and_cat}} at {{booking.session.date}} from {{booking.session.start_time}} to {{booking.session.end_time}} </p>
+            <p> Their contact information is: {{booking.contact}} </p>
+            {% if booking.booking_status == 'PENDING' %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="cur_booking" value= "{{booking.id}}">
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="decision" id="accepted" value="accept">
+                        <label class="form-check-label" for="accepted">Accept Appointment</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                         <input type="radio" class="form-check-input" name="decision" id="rejected" value="reject" checked>
+                         <label class="form-check-label" for="rejected">Reject Appointment</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <button type="submit">Confirm Appointment Decision</button>
+                    </div>
+                </form>
+            {% else %}
+                <p> Status: {{booking.booking_status}}</p>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
     </div>
 
     <!-- Contents Ends Here-->
