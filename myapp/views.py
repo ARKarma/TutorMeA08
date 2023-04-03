@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 import requests
 from myapp.models import Course
 from myapp.models import Session
-from myapp.models import Course, User
+from myapp.models import Course, User, Booking
 from django.db.models import Q
 from myapp.forms import SessionForm
 from django.contrib import messages
@@ -129,7 +129,18 @@ def home(request):
 
 
 def student_home(request):
-    return render(request, 'student_home.html')
+    logged_in_user= request.user
+    email= logged_in_user.email
+    try:
+        current_user=User.objects.get(pk=email)
+    except User.DoesNotExist:
+        #Prob a better way to ensure safety; let's implement later
+        return render(request, 'student_home.html')
+    try:
+        bookings= Booking.objects.filter(user=logged_in_user)
+    except Booking.DoesNotExist:
+        bookings=None
+    return render(request, 'student_home.html', {'cur_User': current_user, 'bookings':bookings})
 
 
 def tutor_home(request):

@@ -57,6 +57,19 @@ class Booking(models.Model):
     last_name = models.CharField(max_length=50)
     contact = models.CharField(max_length=100)
     payment = models.CharField(max_length=50)
+    ACCEPTED= 'ACCEPTED'
+    PENDING= 'PENDING'
+    DECLINED= 'DECLINED'
+    BOOKING_STATUS_CHOICES= [
+        (ACCEPTED, 'Accepted'),
+        (PENDING, 'Pending'),
+        (DECLINED, 'Declined')
+    ]
+    booking_status= models.CharField(
+        max_length=8,
+        choices=BOOKING_STATUS_CHOICES,
+        default=PENDING
+    )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.session}"
