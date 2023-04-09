@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 import requests
 from myapp.models import Course
 from myapp.models import Session
-from myapp.models import Course, User, Booking
+from myapp.models import Course, AppUser, Booking
 from django.db.models import Q
 from myapp.forms import SessionForm
 from django.contrib import messages
@@ -56,9 +56,9 @@ def view_sessions(request, pk):
     logged_in_user= request.user
     try:
         email= logged_in_user.email
-        current_user= User.objects.get(pk=email)
+        current_user= AppUser.objects.get(pk=email)
         return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course, 'cur_User': current_user})
-    except User.DoesNotExist:
+    except AppUser.DoesNotExist:
         return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course, 'cur_User': None})
     return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course})
 
@@ -102,29 +102,29 @@ def home(request):
     logged_in_user = request.user
     email = logged_in_user.email
     try:
-        current_user = User.objects.get(pk=email)
-    except User.DoesNotExist:
+        current_user = AppUser.objects.get(pk=email)
+    except AppUser.DoesNotExist:
         if request.method == 'POST':
             role = request.POST.get('role')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             if role == 'tutor':
-                new_user = User(email=email, first_name=first_name,
-                                last_name=last_name, user_role=User.TUTOR)
+                new_user = AppUser(email=email, first_name=first_name,
+                                   last_name=last_name, user_role=AppUser.TUTOR)
                 new_user.save()
                 return redirect('tutor-home')
             elif role == 'student':
-                new_user = User(email=email, first_name=first_name,
-                                last_name=last_name, user_role=User.STUDENT)
+                new_user = AppUser(email=email, first_name=first_name,
+                                   last_name=last_name, user_role=AppUser.STUDENT)
                 new_user.save()
                 return redirect('student-home')
         else:
             return render(request, 'home.html')
 
     if current_user is not None:
-        if current_user.user_role == User.STUDENT:
+        if current_user.user_role == AppUser.STUDENT:
             return redirect('student-home')
-        elif current_user.user_role == User.TUTOR:
+        elif current_user.user_role == AppUser.TUTOR:
             return redirect('tutor-home')
 
 
@@ -132,8 +132,8 @@ def student_home(request):
     logged_in_user= request.user
     email= logged_in_user.email
     try:
-        current_user=User.objects.get(pk=email)
-    except User.DoesNotExist:
+        current_user=AppUser.objects.get(pk=email)
+    except AppUser.DoesNotExist:
         #Prob a better way to ensure safety; let's implement later
         return render(request, 'student_home.html')
     try:
@@ -147,8 +147,8 @@ def tutor_home(request):
     logged_in_user = request.user
     email = logged_in_user.email
     try:
-        current_user=User.objects.get(pk=email)
-    except User.DoesNotExist:
+        current_user=AppUser.objects.get(pk=email)
+    except AppUser.DoesNotExist:
         #Prob a better way to ensure safety; let's implement later
         return render(request, 'tutor_home.html')
     return render(request, 'tutor_home.html', {'cur_User':current_user})
@@ -166,8 +166,8 @@ def current_sessions(request):
             cur_booking.booking_status= Booking.DECLINED
         cur_booking.save()
     try:
-        current_user = User.objects.get(pk=email)
-    except User.DoesNotExist:
+        current_user = AppUser.objects.get(pk=email)
+    except AppUser.DoesNotExist:
         # Prob a better way to ensure safety; let's implement later
         return render(request, 'current_sessions.html')
     #Get all bookings

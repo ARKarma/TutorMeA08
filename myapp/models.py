@@ -27,7 +27,7 @@ class Session(models.Model):
     max_students = models.IntegerField()
 
 
-class User(models.Model):
+class AppUser(models.Model):
     email = models.CharField(max_length=320, primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

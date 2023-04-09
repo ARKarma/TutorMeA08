@@ -3,7 +3,7 @@ from django.urls import reverse
 from myapp.views import home, course_list, student_home
 from django.contrib.auth.models import AnonymousUser, User, AbstractBaseUser, UserManager
 from django.test import RequestFactory
-from myapp.models import Course, User
+from myapp.models import Course, AppUser
 from unittest.mock import Mock, MagicMock
 import sqlite3
 

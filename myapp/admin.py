@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Course, Session
+from .models import AppUser, Course, Session
 
 
 # Register your models here.
@@ -20,6 +20,6 @@ class SessionAdmin(admin.ModelAdmin):
     list_display = ('course', 'description')
 
 
-admin.site.register(User, UserAdmin)
+admin.site.register(AppUser, UserAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Session, SessionAdmin)
