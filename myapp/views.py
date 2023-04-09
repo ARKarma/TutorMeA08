@@ -54,12 +54,14 @@ def view_sessions(request, pk):
     course = get_object_or_404(Course, pk=pk)
     sessions = Session.objects.filter(course=course)
     logged_in_user= request.user
+    if logged_in_user.is_anonymous:
+        return redirect('/login/')
     try:
         email= logged_in_user.email
         current_user= AppUser.objects.get(pk=email)
         return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course, 'cur_User': current_user})
     except AppUser.DoesNotExist:
-        return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course, 'cur_User': None})
+        return redirect("login.html")
     return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course})
 
 
