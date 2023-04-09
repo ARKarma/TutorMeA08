@@ -40,4 +40,12 @@ def test_student_home():
     response = student_home(request)
     assert response.status_code== 200
 
-
+@pytest.mark.django_db
+def test_tutor_home():
+    path = reverse("tutor-home")
+    request= RequestFactory().get(path)
+    requestUser= User.objects.create_user(username='bbb', email="bob@gmail.com")
+    testUser = AppUser.objects.create(email="bob@gmail.com", first_name="bob", last_name="tom", user_role= AppUser.TUTOR)
+    request.user= requestUser
+    response = student_home(request)
+    assert response.status_code== 200
