@@ -1,6 +1,6 @@
 import pytest
 from django.urls import reverse
-from myapp.views import home, course_list, student_home
+from myapp.views import home, course_list, student_home, tutor_home
 from django.contrib.auth.models import AnonymousUser, User, AbstractBaseUser, UserManager
 from django.test import RequestFactory
 from myapp.models import Course, AppUser
@@ -47,5 +47,5 @@ def test_tutor_home():
     requestUser= User.objects.create_user(username='bbb', email="bob@gmail.com")
     testUser = AppUser.objects.create(email="bob@gmail.com", first_name="bob", last_name="tom", user_role= AppUser.TUTOR)
     request.user= requestUser
-    response = student_home(request)
+    response = tutor_home(request)
     assert response.status_code== 200

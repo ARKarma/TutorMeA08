@@ -133,6 +133,8 @@ def student_home(request):
     email= logged_in_user.email
     try:
         current_user=AppUser.objects.get(pk=email)
+        if(current_user.user_role==AppUser.TUTOR):
+            return redirect('tutor_home.html')
     except AppUser.DoesNotExist:
         return redirect('login.html')
     try:
@@ -147,6 +149,8 @@ def tutor_home(request):
     email = logged_in_user.email
     try:
         current_user=AppUser.objects.get(pk=email)
+        if(current_user.user_role==AppUser.STUDENT):
+            return redirect('student_home.html')
     except AppUser.DoesNotExist:
         return redirect('login.html')
     return render(request, 'tutor_home.html', {'cur_User':current_user})
