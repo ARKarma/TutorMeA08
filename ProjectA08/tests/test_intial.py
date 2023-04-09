@@ -30,5 +30,14 @@ def test_classes_page():
     response = course_list(request)
     assert response.status_code== 200
 
+@pytest.mark.django_db
+def test_student_home():
+    path = reverse("student-home")
+    request= RequestFactory().get(path)
+    requestUser= User.objects.create_user(username='bbb', email="bob@gmail.com")
+    testUser = AppUser.objects.create(email="bob@gmail.com", first_name="bob", last_name="tom", user_role= AppUser.STUDENT)
+    request.user= requestUser
+    response = student_home(request)
+    assert response.status_code== 200
 
 

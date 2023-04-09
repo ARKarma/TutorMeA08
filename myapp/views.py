@@ -134,8 +134,7 @@ def student_home(request):
     try:
         current_user=AppUser.objects.get(pk=email)
     except AppUser.DoesNotExist:
-        #Prob a better way to ensure safety; let's implement later
-        return render(request, 'student_home.html')
+        return redirect('login.html')
     try:
         bookings= Booking.objects.filter(user=logged_in_user)
     except Booking.DoesNotExist:
@@ -149,8 +148,7 @@ def tutor_home(request):
     try:
         current_user=AppUser.objects.get(pk=email)
     except AppUser.DoesNotExist:
-        #Prob a better way to ensure safety; let's implement later
-        return render(request, 'tutor_home.html')
+        return redirect('login.html')
     return render(request, 'tutor_home.html', {'cur_User':current_user})
 
 def current_sessions(request):
