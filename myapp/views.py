@@ -40,14 +40,23 @@ def fetch_courses():
 
 
 def course_list(request):
-    query = request.GET.get('q')
-    if query:
-        courses = Course.objects.filter(
-            Q(sub_and_cat__icontains=query) | Q(subject__icontains=query) | Q(catalog_number__icontains=query) | Q(
-                class_title__icontains=query))
-    else:
+    subject_query = request.GET.get('sub')
+    catalog_query = request.GET.get('cat')
+    title_query = request.GET.get('course_title')
+    courses = Course.objects.all()
+    if subject_query:
+        subject_list = courses.filter(Q(subject__icontains=subject_query))
+        courses = subject_list
+    if catalog_query:
+        catalog_list = courses.filter(Q(catalog_number__icontains=catalog_query))
+        courses = catalog_list
+    if title_query:
+        title_list = courses.filter(Q(class_title__icontains=title_query))
+        courses = title_list
+    if (not subject_query) & (not catalog_query) & (not title_query):
         courses = Course.objects.all()
     return render(request, 'course_list.html', {'courses': courses})
+
 
 
 def view_sessions(request, pk):
@@ -63,32 +72,6 @@ def view_sessions(request, pk):
     except AppUser.DoesNotExist:
         return redirect("login.html")
     return render(request, 'course_session_view.html', {'sessions': sessions, 'course': course})
-
-
-# class SessionsView(generic.DetailView):
-#     # model = Session
-
-#     template_name = 'course_session_view.html'
-
-#     def get_queryset(self):
-#         self.course = get_object_or_404(Course, name=self.kwargs['course'])
-#         return Session.objects.filter(class_title=self.course)
-
-#     def get_context_data(self, **kwargs):
-#         # Call the base implementation first to get a context
-#         context = super().get_context_data(**kwargs)
-#         # Add in the publisher
-#         context['course'] = self.course
-#         return context
-# course =
-# template_name = 'course_session_view.html'
-
-
-# def get_queryset(self):
-#     """
-#     Excludes any questions that aren't published yet.
-#     """
-#     return Session.objects.filter(class_title=sub_and_cat)
 
 
 def login(request):
