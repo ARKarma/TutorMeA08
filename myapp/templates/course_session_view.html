@@ -22,9 +22,11 @@
                     <li class="nav-item">
                         <a class="nav-link text-light" href="{% url 'home'%}">Home</a>
                     </li>
+                    {% if cur_User.user_role == 'TUTOR' %}
                     <li class="nav-item">
                         <a class="nav-link text-light" href="{% url 'post-session'%}">Post Session</a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
                       <a class="nav-link text-light" href="{% url 'course_list'%}">Seach Classes</a>
                     </li>
