@@ -42,9 +42,15 @@
 	<h1>Search Spring 2023 Undergraduate Classes</h1>
 
   <form method="get">
-    <input type="text" name="q" placeholder="Search by subject, catalog number, course title, or class number">
+    <input type="text" name="sub" placeholder="Search by subject">
+    <input type="text" name="cat" placeholder="Search by catalog number">
+    <input type="text" name="course_title" placeholder="Search by course title">
     <button type="submit">Search</button>
   </form>
+  
+  <div>
+    <a href="{% url 'course_list'%}">Click to return to search page</a>
+  </div>
 
   <ul>
     {% for course in courses %}
