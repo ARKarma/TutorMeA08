@@ -6,7 +6,7 @@ from myapp.models import Session
 from myapp.models import Course, AppUser, Booking
 from django.db.models import Q
 from myapp.forms import SessionForm
-from django.contrib import messages
+from django.contrib import *
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from myapp.forms import BookingForm
@@ -203,7 +203,7 @@ def post_session(request):
             session.tutor = request.user
             session.course = course
             session.save()
-            messages.success(request, 'Session posted successfully.')
+            messages.success(request, 'Session posted successfully.', fail_silently=True)
             return redirect('tutor-home')
     else:
         form = SessionForm()
