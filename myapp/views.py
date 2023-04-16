@@ -43,18 +43,20 @@ def course_list(request):
     subject_query = request.GET.get('sub')
     catalog_query = request.GET.get('cat')
     title_query = request.GET.get('course_title')
+    courses = Course.objects.all()
     if subject_query:
-        current_list = Course.objects.filter(Q(subject__icontains=subject_query))
-        courses = current_list
+        subject_list = courses.filter(Q(subject__icontains=subject_query))
+        courses = subject_list
     if catalog_query:
-        current_list = Course.objects.filter(Q(catalog_number__icontains=catalog_query))
-        courses = list(set(courses + current_list))
+        catalog_list = courses.filter(Q(catalog_number__icontains=catalog_query))
+        courses = catalog_list
     if title_query:
-        current_list = Course.objects.filter(Q(class_title__icontains=title_query))
-        courses = list(set(courses + current_list))
+        title_list = courses.filter(Q(class_title__icontains=title_query))
+        courses = title_list
     if (not subject_query) & (not catalog_query) & (not title_query):
         courses = Course.objects.all()
     return render(request, 'course_list.html', {'courses': courses})
+
 
 
 def view_sessions(request, pk):
