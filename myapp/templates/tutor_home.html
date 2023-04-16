@@ -1,16 +1,15 @@
 {% extends "myapp_base.html" %}
-{% block title %} Tutor Home {% endblock %}
+{% block title %} Tutor Home  {% endblock %}
 {% block content %}
-<div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
-    <div class="card">
-        <div class="card-body py-5 px-md-3 text-center">
-            <h1> Welcome, Tutor {{cur_User.first_name}}</h1>
-            <a href="{% url 'current-sessions'%}">
-                Manage Sessions
-            </a>
+    <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
+		<div class="card">
+			<div class="card-body py-5 px-md-3 text-center">
+                <h1> Welcome, Tutor {{cur_User.first_name}}</h1>
+                <a href ="{% url 'current-sessions'%}">
+                    Manage Sessions
+                </a>
+            </div>
         </div>
     </div>
-</div>
-
 
 {% endblock %}
