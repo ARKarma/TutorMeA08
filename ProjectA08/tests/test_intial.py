@@ -83,3 +83,15 @@ def test_8_post_session():
         response = post_session(request)
     assert form_mock.is_valid.called
     assert response.status_code==302
+
+@pytest.mark.django_db
+def test_9_post_session_fail():
+    path = reverse("post-session")
+    request=RequestFactory().post(path)
+    request.user = User.objects.create_user(username='b', email='test@test.com')
+    form_mock = MagicMock()
+    form_mock.is_valid.return_value = False
+    with patch('myapp.views.SessionForm', return_value=form_mock):
+        response = post_session(request)
+    assert form_mock.is_valid.called
+    assert response.status_code==200
