@@ -48,16 +48,9 @@
                 <h1> Welcome, Student {{cur_User.first_name}}</h1>
             </div>
             <div class="card-body py-5 px-md-3 text-center">
-                 <h2> Booking Appointments Status: </h2>
-                <ul>
-                    {% for booking in bookings %}
-                        <li>
-                            <p> Session for {{booking.session.course.sub_and_cat}}</p>
-                            <p> Time: {{booking.session.date}} at {{booking.session.start_time}} to {{booking.session.end_time}}</p>
-                            <p> Status: {{booking.booking_status}}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
+                <a href ="{% url 'current-appointments'%}">
+                    Manage Sessions
+                </a>
             </div>
 
         </div>

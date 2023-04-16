@@ -173,9 +173,23 @@ def current_sessions(request):
         if(booking!=None):
             bookings.append(booking)
 
-
     return render(request, 'current_sessions.html', {'cur_User': current_user, 'bookings': bookings})
 
+def current_appointments(request):
+    logged_in_user = request.user
+    email = logged_in_user.email
+    try:
+        current_user = AppUser.objects.get(pk=email)
+    except AppUser.DoesNotExist:
+        # Prob a better way to ensure safety; let's implement later
+        return render(request, 'current_sessions.html')
+    #Get all bookings
+    try:
+        bookings= Booking.objects.filter(user=logged_in_user)
+    except Booking.DoesNotExist:
+            bookings=None
+
+    return render(request, 'current_appointments.html', {'cur_User': current_user, 'bookings': bookings})
 
 def post_session(request):
     if request.method == 'POST':

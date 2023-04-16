@@ -19,5 +19,6 @@ urlpatterns = [
          views.book_session, name='book-session'),
     path('booking-confirmation/<str:course_id>/',
          views.booking_confirmation, name='booking_confirmation'),
-    path('current-sessions/', views.current_sessions, name='current-sessions')
+    path('current-sessions/', views.current_sessions, name='current-sessions'),
+    path('current-appointments/', views.current_appointments, name='current-appointments')
 ]
