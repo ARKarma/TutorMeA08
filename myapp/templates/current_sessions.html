@@ -1,93 +1,39 @@
-<!doctype html>
-{% load bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tutor Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  </head>
-  <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-            <div class="container my-2">
-              <a class="navbar-brand fw-semibold text-light">
-                Tutor Me
-              </a>
+{% extends "myapp_base.html" %}
+{% block title %} Tutor Home {% endblock %}
+{% block content %}
 
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-
-              <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="{% url 'post-session'%}">Post Session</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-light" href="{% url 'course_list'%}">Search Classes</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'logout'%}">Log Out</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'login'%}">Log In</a>
-                    </li>
-                    {% endif %}
-                </ul>
-              </div>
-            </div>
-          </nav>
-    <!-- Contents Starts Here-->
-    <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
+<div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
     <ul>
         {% for booking in bookings %}
         <li>
-            <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for {{booking.session.course.sub_and_cat}} at {{booking.session.date}} from {{booking.session.start_time}} to {{booking.session.end_time}} </p>
+            <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for
+                {{booking.session.course.sub_and_cat}} at {{booking.session.date}} from {{booking.session.start_time}}
+                to {{booking.session.end_time}} </p>
             <p> Their contact information is: {{booking.contact}} </p>
             {% if booking.booking_status == 'PENDING' %}
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="cur_booking" value= "{{booking.id}}">
-                    <div class="form-check form-check-inline">
-                        <input type="radio" class="form-check-input" name="decision" id="accepted" value="accept">
-                        <label class="form-check-label" for="accepted">Accept Appointment</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                         <input type="radio" class="form-check-input" name="decision" id="rejected" value="reject" checked>
-                         <label class="form-check-label" for="rejected">Reject Appointment</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <button type="submit">Confirm Appointment Decision</button>
-                    </div>
-                </form>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="cur_booking" value="{{booking.id}}">
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="decision" id="accepted" value="accept">
+                    <label class="form-check-label" for="accepted">Accept Appointment</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="decision" id="rejected" value="reject" checked>
+                    <label class="form-check-label" for="rejected">Reject Appointment</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <button type="submit">Confirm Appointment Decision</button>
+                </div>
+            </form>
             {% else %}
-                <p> Status: {{booking.booking_status}}</p>
+            <p> Status: {{booking.booking_status}}</p>
             {% endif %}
         </li>
         {% endfor %}
     </ul>
-    </div>
+</div>
 
-    <!-- Contents Ends Here-->
-    <footer class="bg-primary text-white p-3 fixed-bottom">
-            <div class="container mb">
-              <div class="row">
-                <div class="col-md-6">
-                  <p>&copy;A-08</p>
-                </div>
-                <div class="col-md-6">
-                  <ul class="list-inline text-md-end">
-                    <p>Published Date: Feb, 22, 2023
-                    <p>Team: A-08</p>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  </body>
-</html>
+
+
+{% endblock %}

@@ -1,137 +1,84 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Post Session</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  </head>
-  <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-            <div class="container my-2">
-              <a class="navbar-brand fw-semibold text-light">
-                Tutor Me
-              </a>
-
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-
-              <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-light" href="{% url 'tutor-home'%}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-light" href="{% url 'course_list'%}">Search Classes</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'logout'%}">Log Out</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'login'%}">Log In</a>
-                    </li>
-                    {% endif %}
-                </ul>
-              </div>
-            </div>
-          </nav>
-    <!-- Contents Starts Here-->
-    <div class="card">
+{% extends "myapp_base.html" %}
+{% block title %} Post Session {% endblock %}
+{% block content %}
+<!-- Contents Starts Here-->
+<div class="card">
     <!-- Start Card Body -->
     <div class="card-body">
-      <!-- Start Form -->
-      <form method="post" action="{% url 'post-session' %}">
-        {% csrf_token %}
-          <!-- Start Course Selection -->
-          <div class="form-group m-1">
-            <label for="course">Course</label>
-            {{ form.course }}
-              <div>
-                <small class="form-text text-muted">Please choose the class you are tutoring for </small>
-                  </div>
-          </div>
-          <!-- End Course Selection -->
+        <!-- Start Form -->
+        <form method="post" action="{% url 'post-session' %}">
+            {% csrf_token %}
+            <!-- Start Course Selection -->
+            <div class="form-group m-1">
+                <label for="course">Course</label>
+                {{ form.course }}
+                <div>
+                    <small class="form-text text-muted">Please choose the class you are tutoring for </small>
+                </div>
+            </div>
+            <!-- End Course Selection -->
 
-        <!-- Start Input Description -->
-        <div class="form-group m-1">
-          <label for="description">Description</label>
-          <input type="text" class="form-control" id="description" name="description" placeholder="Description for Session" required />
-          <small class="form-text text-muted"> Please give a description for your session </small>
-        </div>
-        <!-- End Input Description -->
+            <!-- Start Input Description -->
+            <div class="form-group m-1">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" name="description"
+                       placeholder="Description for Session" required/>
+                <small class="form-text text-muted"> Please give a description for your session </small>
+            </div>
+            <!-- End Input Description -->
 
-        <!-- Start Input Price -->
-        <div class="form-group m-1">
-          <label for="price">Hourly Rate</label>
-          <input type="number" class="form-control" id="price" name="price" placeholder="0.00" min="'0" step="0.5" required />
-          <small class="form-text text-muted"> Please give your hourly rate in USD </small>
-        </div>
-        <!-- End Input Price -->
+            <!-- Start Input Price -->
+            <div class="form-group m-1">
+                <label for="price">Hourly Rate</label>
+                <input type="number" class="form-control" id="price" name="price" placeholder="0.00" min="'0" step="0.5"
+                       required/>
+                <small class="form-text text-muted"> Please give your hourly rate in USD </small>
+            </div>
+            <!-- End Input Price -->
 
-        <!-- Start Input Date , Start Time and End Time -->
-        <div class="form-row m-1">
-          <!-- Start Input Date -->
-          <div class="form-group col-md-4">
-            <label for="date">Date</label>
-            <input type="date" class="form-control" id="date" name="date" required />
-            <small class="form-text text-muted">Please choose date for session.</small>
-          </div>
-          <!-- End Input Date -->
+            <!-- Start Input Date , Start Time and End Time -->
+            <div class="form-row m-1">
+                <!-- Start Input Date -->
+                <div class="form-group col-md-4">
+                    <label for="date">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required/>
+                    <small class="form-text text-muted">Please choose date for session.</small>
+                </div>
+                <!-- End Input Date -->
 
-          <!-- Start Input Start Time -->
-          <div class="form-group col-md-4">
-            <label for="start_time">Start Time</label>
-            <input type="time" class="form-control" id="start_time" name="start_time" required />
-            <small class="form-text text-muted">Please choose start time for session.</small>
-          </div>
-          <!-- End Input Start Time -->
+                <!-- Start Input Start Time -->
+                <div class="form-group col-md-4">
+                    <label for="start_time">Start Time</label>
+                    <input type="time" class="form-control" id="start_time" name="start_time" required/>
+                    <small class="form-text text-muted">Please choose start time for session.</small>
+                </div>
+                <!-- End Input Start Time -->
 
-          <!-- Start Input End Time -->
-          <div class="form-group col-md-4">
-            <label for="end_time">End Time</label>
-            <input type="time" class="form-control" id="end_time" name="end_time" required />
-            <small class="form-text text-muted">Please choose end time for session.</small>
-          </div>
-          <!-- End Input End Time -->
-        </div>
-        <!-- End Input Date , Start Time and End Time -->
+                <!-- Start Input End Time -->
+                <div class="form-group col-md-4">
+                    <label for="end_time">End Time</label>
+                    <input type="time" class="form-control" id="end_time" name="end_time" required/>
+                    <small class="form-text text-muted">Please choose end time for session.</small>
+                </div>
+                <!-- End Input End Time -->
+            </div>
+            <!-- End Input Date , Start Time and End Time -->
 
-        <!-- Start Session Size -->
-        <div class="form-group col-md-4 m-1">
-            <label for="max_students">Class Size</label>
-            <input type="number" class="form-control" id="max_students" name="max_students" required />
-            <small class="form-text text-muted">Please choose size for session.</small>
-          </div>
-        <!-- End Session Size -->
+            <!-- Start Session Size -->
+            <div class="form-group col-md-4 m-1">
+                <label for="max_students">Class Size</label>
+                <input type="number" class="form-control" id="max_students" name="max_students" required/>
+                <small class="form-text text-muted">Please choose size for session.</small>
+            </div>
+            <!-- End Session Size -->
 
-        <!-- Start Submit Button -->
-        <button class="btn btn-primary btn-block col-lg-2 float-right" type="submit" >Post Session</button>
-        <!-- End Submit Button -->
-      </form>
-      <!-- End Form -->
+            <!-- Start Submit Button -->
+            <button class="btn btn-primary btn-block col-lg-2 float-right" type="submit">Post Session</button>
+            <!-- End Submit Button -->
+        </form>
+        <!-- End Form -->
     </div>
     <!-- End Card Body -->
-  </div>
+</div>
 
-    <!-- Contents Ends Here-->
-    <footer class="bg-primary text-white p-3">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-6">
-                  <p>&copy;A-08</p>
-                </div>
-                <div class="col-md-6">
-                  <ul class="list-inline text-md-end">
-                    <p>Published Date: Feb, 22, 2023
-                    <p>Team: A-08</p>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  </body>
-</html>
+{% endblock %}
