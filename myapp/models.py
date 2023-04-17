@@ -26,6 +26,9 @@ class Session(models.Model):
     end_time = models.TimeField()
     max_students = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.start_time}-{self.end_time}\n{self.course}"
+
 
 class AppUser(models.Model):
     email = models.CharField(max_length=320, primary_key=True)
@@ -47,7 +50,7 @@ class AppUser(models.Model):
         app_label = 'myapp'
 
     def __str__(self):
-        return self.first_name+" "+self.last_name
+        return self.first_name + " " + self.last_name
 
 
 class Booking(models.Model):
@@ -57,15 +60,15 @@ class Booking(models.Model):
     last_name = models.CharField(max_length=50)
     contact = models.CharField(max_length=100)
     payment = models.CharField(max_length=50)
-    ACCEPTED= 'ACCEPTED'
-    PENDING= 'PENDING'
-    DECLINED= 'DECLINED'
-    BOOKING_STATUS_CHOICES= [
+    ACCEPTED = 'ACCEPTED'
+    PENDING = 'PENDING'
+    DECLINED = 'DECLINED'
+    BOOKING_STATUS_CHOICES = [
         (ACCEPTED, 'Accepted'),
         (PENDING, 'Pending'),
         (DECLINED, 'Declined')
     ]
-    booking_status= models.CharField(
+    booking_status = models.CharField(
         max_length=8,
         choices=BOOKING_STATUS_CHOICES,
         default=PENDING
