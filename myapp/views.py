@@ -38,12 +38,18 @@ def fetch_courses():
     # print(f"Fetched {len(courses)} courses")
     return
 
-
+@login_required
 def course_list(request):
     subject_query = request.GET.get('sub')
     catalog_query = request.GET.get('cat')
     title_query = request.GET.get('course_title')
     courses = Course.objects.all()
+    logged_in_user = request.user
+    email = logged_in_user.email
+    try:
+        current_user = AppUser.objects.get(pk=email)
+    except AppUser.DoesNotExist:
+        return redirect('login.html')
     if subject_query:
         subject_list = courses.filter(Q(subject__icontains=subject_query))
         courses = subject_list
@@ -55,10 +61,10 @@ def course_list(request):
         courses = title_list
     if (not subject_query) & (not catalog_query) & (not title_query):
         courses = Course.objects.all()
-    return render(request, 'course_list.html', {'courses': courses})
+    return render(request, 'course_list.html', {'courses': courses, 'cur_User': current_user})
 
 
-
+@login_required
 def view_sessions(request, pk):
     course = get_object_or_404(Course, pk=pk)
     sessions = Session.objects.filter(course=course)
@@ -112,7 +118,7 @@ def home(request):
         elif current_user.user_role == AppUser.TUTOR:
             return redirect('tutor-home')
 
-
+@login_required
 def student_home(request):
     logged_in_user= request.user
     email= logged_in_user.email
@@ -128,7 +134,7 @@ def student_home(request):
         bookings=None
     return render(request, 'student_home.html', {'cur_User': current_user, 'bookings':bookings})
 
-
+@login_required
 def tutor_home(request):
     logged_in_user = request.user
     email = logged_in_user.email
@@ -140,6 +146,7 @@ def tutor_home(request):
         return redirect('login.html')
     return render(request, 'tutor_home.html', {'cur_User':current_user})
 
+@login_required
 def current_sessions(request):
     logged_in_user = request.user
     email = logged_in_user.email
@@ -175,6 +182,7 @@ def current_sessions(request):
 
     return render(request, 'current_sessions.html', {'cur_User': current_user, 'bookings': bookings})
 
+@login_required
 def current_appointments(request):
     logged_in_user = request.user
     email = logged_in_user.email
@@ -191,6 +199,7 @@ def current_appointments(request):
 
     return render(request, 'current_appointments.html', {'cur_User': current_user, 'bookings': bookings})
 
+@login_required
 def post_session(request):
     if request.method == 'POST':
         form = SessionForm(request.POST)
