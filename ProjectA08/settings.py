@@ -31,7 +31,7 @@ SITE_ID=1
 # Application definition
 
 INSTALLED_APPS = [
-    "whitenoise.runserver_nonstatic",
+    "whitenoise.runserver_nostatic",
     "django.contrib.admin",
     "django.contrib.sites",
     "django.contrib.auth",
