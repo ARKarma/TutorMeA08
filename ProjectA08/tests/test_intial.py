@@ -34,6 +34,7 @@ def test_3_classes_page():
     response = course_list(request)
     assert response.status_code== 200
 
+
 @pytest.mark.django_db
 def test_4_student_home():
     path = reverse("student-home")
@@ -117,3 +118,32 @@ def test_11_student_session_view():
     request.user = requestUser
     response = current_appointments(request)
     assert response.status_code==200
+
+@pytest.mark.django_db
+def test_12_anonymous_course_view_redirect():
+    path = reverse("course_list")
+    request = RequestFactory().get(path)
+    request.user = AnonymousUser()
+    response = course_list(request)
+    assert response.status_code == 302
+
+@pytest.mark.django_db
+def test_13_anonymous_student_home_redirect():
+    path = reverse("student-home")
+    request = RequestFactory().get(path)
+    request.user = AnonymousUser()
+    response = student_home(request)
+    assert response.status_code == 302
+
+@pytest.mark.django_db
+def test_14_anonymous_tutor_home_redirect():
+    path = reverse("tutor-home")
+    request = RequestFactory().get(path)
+    request.user = AnonymousUser()
+    response = student_home(request)
+    assert response.status_code == 302
+
+@pytest.mark.django_db
+def test_15_anonymous():
+
+    assert True
