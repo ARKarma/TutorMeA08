@@ -1,9 +1,21 @@
+{% extends "myapp_base.html" %}
+
 {% block content %}
-  <h2>Booking Confirmation</h2>
-  <p>Your booking has been successfully submitted.</p>
-  <p>First Name: {{ booking.first_name }}</p>
-  <p>Last Name: {{ booking.last_name }}</p>
-  <p>Contact: {{ booking.contact }}</p>
-  <p>Payment: Payment Due in 3-5 Days</p>
-  <a href="{% url 'course_list' %}">Go back to search classes</a>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Booking Confirmation</h2>
+                    <p>Your booking has been successfully submitted.</p>
+                    <p>First Name: {{ booking.first_name }}</p>
+                    <p>Last Name: {{ booking.last_name }}</p>
+                    <p>Contact: {{ booking.contact }}</p>
+                    <p>Payment: Payment Due in 3-5 Days</p>
+                    <a href="{% url 'course_list' %}" class="btn btn-primary">Go back to search classes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -9,7 +9,9 @@ class SessionForm(forms.ModelForm):
         fields = ['course', 'description', 'price', 'date',
                   'start_time', 'end_time', 'max_students', ]
 
-    course = forms.ModelChoiceField(queryset=Course.objects.all())
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.all()
+    )
 
 
 class BookingForm(forms.ModelForm):
