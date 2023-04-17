@@ -1,30 +1,37 @@
 {% extends "myapp_base.html" %}
 {% block title %} Make Choice {% endblock %}
 {% block content %}
-<h1>Search Spring 2023 Undergraduate Classes</h1>
+<div class="container">
+    <h1 class="my-4">Search Spring 2023 Undergraduate Classes</h1>
 
-<form method="get">
-    <input type="text" name="sub" placeholder="Search by subject">
-    <input type="text" name="cat" placeholder="Search by catalog number">
-    <input type="text" name="course_title" placeholder="Search by course title">
-    <button type="submit">Search</button>
-</form>
+    <form method="get" class="row g-3">
+        <div class="col-md-4">
+            <input type="text" name="sub" placeholder="Search by subject" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="cat" placeholder="Search by catalog number" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="course_title" placeholder="Search by course title" class="form-control">
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
 
-<div>
-    <a href="{% url 'course_list'%}">Click to return to search page</a>
+    <div class="mt-3">
+        <a href="{% url 'course_list'%}" class="btn btn-secondary">Return to search page</a>
+    </div>
+
+    <ul class="list-unstyled mt-4">
+        {% for course in courses %}
+        <li class="mb-3">
+            <h2 class="h4">{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
+            <a href="{% url 'sessions' course.pk %}" class="btn btn-primary">Click here for available sessions</a>
+        </li>
+        {% empty %}
+        <p>No courses found.</p>
+        {% endfor %}
+    </ul>
 </div>
-
-<ul>
-    {% for course in courses %}
-    <li>
-        <h2>{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
-        <a href="{% url 'sessions' course.pk %}">Click here for available sessions </a>
-        <!-- <p>Class number: {{ course.class_number }}</p>
-        <p>Instructor: {{ course.instructor }}</p> -->
-    </li>
-    {% empty %}
-    <p>No courses found.</p>
-    {% endfor %}
-</ul>
-
 {% endblock %}
