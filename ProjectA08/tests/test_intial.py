@@ -28,7 +28,9 @@ def test_2_course_create():
 def test_3_classes_page():
     path = reverse("course_list")
     request= RequestFactory().get(path)
-    request.user= AnonymousUser()
+    requestUser = User.objects.create_user(username='bbb', email="bob@gmail.com")
+    testUser = AppUser.objects.create(email="bob@gmail.com", first_name="bob", last_name="tom", user_role=AppUser.STUDENT)
+    request.user= requestUser
     response = course_list(request)
     assert response.status_code== 200
 
