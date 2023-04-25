@@ -35,10 +35,15 @@
                         <a class="nav-link text-light" href="{% url 'post-session'%}">Post Session</a>
                     </li>
                 {% endif %}
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link text-light" href="{% url 'course_list'%}">Search Classes</a>
                 </li>
-                {% if user.is_authenticated %}
+
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{% url 'calendar'%}">Calendar</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link text-light" href="{% url 'logout'%}">Log Out</a>
                 </li>
@@ -47,9 +52,6 @@
                     <a class="nav-link text-light" href="{% url 'login'%}">Log In</a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'calendar'%}">Calendar</a>
-                </li>
             </ul>
         </div>
     </div>
