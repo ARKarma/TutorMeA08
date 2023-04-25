@@ -59,6 +59,7 @@
 
                 <li class="nav-item">
                     <form class="nav-link text-light" action="{% url 'logout'%}" onsubmit="return logoutConfirm()" method="post">
+                        {% csrf_token %}
                         <button type="submit">Log Out</button>
                     </form>
                 </li>
