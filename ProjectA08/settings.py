@@ -79,8 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "ProjectA08.wsgi.application"
-
-
+#SECURE_SSL_REDIRECT=True
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 

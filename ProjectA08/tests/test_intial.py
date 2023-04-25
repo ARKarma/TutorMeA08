@@ -144,6 +144,19 @@ def test_14_anonymous_tutor_home_redirect():
     assert response.status_code == 302
 
 @pytest.mark.django_db
-def test_15_anonymous():
+def test_15_appuser_student_create():
+    newUser= AppUser.objects.create(email= "testmail@test.com", first_name="Tester", last_name="Test", user_role=AppUser.STUDENT)
+    assert newUser.email== "testmail@test.com"
+    assert newUser== AppUser.objects.get(pk="testmail@test.com")
+    assert newUser.user_role== AppUser.STUDENT
 
+@pytest.mark.django_db
+def test_16_appuser_tutor_create():
+    newUser = AppUser.objects.create(email="testmail@test.com", first_name="Tester", last_name="Test", user_role=AppUser.TUTOR)
+    assert newUser.email == "testmail@test.com"
+    assert newUser == AppUser.objects.get(pk="testmail@test.com")
+    assert newUser.user_role == AppUser.TUTOR
+
+@pytest.mark.django_db
+def test_17_session_create():
     assert True

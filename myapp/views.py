@@ -183,11 +183,12 @@ def current_sessions(request):
     for session in sessions:
         # Will need to make a check so that you can only have one booking per session
         try:
-            booking = Booking.objects.get(session=session)
+            bookingl = Booking.objects.filter(session=session)
         except Booking.DoesNotExist:
             booking = None
         if (booking != None):
-            bookings.append(booking)
+            for booking in bookingl:
+                bookings.append(booking)
 
     return render(request, 'current_sessions.html', {'cur_User': current_user, 'bookings': bookings})
 
