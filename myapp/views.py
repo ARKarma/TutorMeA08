@@ -185,8 +185,8 @@ def current_sessions(request):
         try:
             bookingl = Booking.objects.filter(session=session)
         except Booking.DoesNotExist:
-            booking = None
-        if (booking != None):
+            bookingl = None
+        if (bookingl != None):
             for booking in bookingl:
                 bookings.append(booking)
 
