@@ -28,10 +28,10 @@
         <div class="card mb-4 py-3 border-left-primary">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-8">
                         <h2 class="h4">{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <a href="{% url 'sessions' course.pk %}" class="btn btn-primary">Click here for available sessions</a>
                     </div>
                 </div>
