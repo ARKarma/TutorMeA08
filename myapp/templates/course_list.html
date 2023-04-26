@@ -6,29 +6,40 @@
 
     <form method="get" class="row g-3">
         <div class="col-md-4">
-            <input type="text" name="sub" placeholder="Search by subject" class="form-control">
+            <input type="text" name="sub" placeholder="Search by subject (e.g. CS, STAT, or ECON)" class="form-control">
         </div>
         <div class="col-md-4">
-            <input type="text" name="cat" placeholder="Search by catalog number" class="form-control">
+            <input type="text" name="cat" placeholder="Search by catalog number (e.g. 2110, 3250, or 4774)" class="form-control">
         </div>
         <div class="col-md-4">
-            <input type="text" name="course_title" placeholder="Search by course title" class="form-control">
+            <input type="text" name="course_title" placeholder="Search by course title (e.g. Computer Architecture)" class="form-control">
         </div>
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">Search</button>
+        <div class="row my-2">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+            <div class="col-6">
+                <a href="{% url 'course_list'%}" class="btn btn-secondary">Return to search page</a>
+            </div>
         </div>
     </form>
 
-    <div class="mt-3">
-        <a href="{% url 'course_list'%}" class="btn btn-secondary">Return to search page</a>
-    </div>
+
 
     <ul class="list-unstyled mt-4">
         {% for course in courses %}
-        <li class="mb-3">
-            <h2 class="h4">{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
-            <a href="{% url 'sessions' course.pk %}" class="btn btn-primary">Click here for available sessions</a>
-        </li>
+        <div class="card mb-4 py-3 border-left-primary">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h2 class="h4">{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
+                    </div>
+                    <div class="col-4">
+                        <a href="{% url 'sessions' course.pk %}" class="btn btn-primary">Click here for available sessions</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% empty %}
         <p>No courses found.</p>
         {% endfor %}

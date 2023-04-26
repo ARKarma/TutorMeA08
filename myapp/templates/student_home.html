@@ -1,17 +1,65 @@
 {% extends "myapp_base.html" %}
 {% block title %} Student Home {% endblock %}
 {% block content %}
-    <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
-		<div class="card">
-			<div class="card-body py-5 px-md-3 text-center">
-                <h1> Welcome, Student {{cur_User.first_name}}</h1>
-            </div>
-            <div class="card-body py-5 px-md-3 text-center">
-                <a href ="{% url 'current-appointments'%}">
-                    Manage Sessions
-                </a>
-            </div>
+<section class="">
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+        <div class="container">
+            <div class="row gx-lg-5 align-items-center">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h1 class="my-5 display-3 fw-bold ls-tight">
+                        Welcome,<br/>
+                        <span class="text-primary"> {{cur_User.first_name}}</span>
+                    </h1>
+                    <div class="card">
+                        <div class="card-body py-5 px-md-5">
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <div class="card">
+                        <div class="card-body py-5 px-md-5">
+                            <div class="my-2">
+                                <h2> Appointment Status </h2>
+                            </div>
+                            {% if bookings == None %}
+                            <p> No current appointments </p>
+                            {% else %}
+                            {% for booking in bookings %}
+                            {% if booking.booking_status == 'ACCEPTED' %}
+                            <div class="border-start border-success border-3 m-y p-2 float-left"
+                                 style="border-radius-success:5px">
+                                <p> Session for {{booking.session.course.sub_and_cat}}</p>
+                                <p> Session for {{booking.session.course.sub_and_cat}}</p>
+                                <p> Time: {{booking.session.date}} at {{booking.session.start_time}} to
+                                    {{booking.session.end_time}}</p>
+                                <p> Status: {{booking.booking_status}}</p>
+                            </div>
+                            {% elif booking.booking_status == 'PENDING' %}
+                            <div class="border-start border-warning border-3 my-4 p-2"
+                                 style="border-radius-warning:5px">
+                                <p> Session for {{booking.session.course.sub_and_cat}}</p>
+                                <p> Session for {{booking.session.course.sub_and_cat}}</p>
+                                <p> Time: {{booking.session.date}} at {{booking.session.start_time}} to
+                                    {{booking.session.end_time}}</p>
+                                <p> Status: {{booking.booking_status}}</p>
+                            </div>
+                            {% else %}
+                            <div class="border-start border-danger border-3 my-4 p-2" style="border-radius-danger:5px">
+                                <p> Session for {{booking.session.course.sub_and_cat}}</p>
+                                <p> Session for {{booking.session.course.sub_and_cat}}</p>
+                                <p> Time: {{booking.session.date}} at {{booking.session.start_time}} to
+                                    {{booking.session.end_time}}</p>
+                                <p> Status: {{booking.booking_status}}</p>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
- {% endblock %}
+</section>
+{% endblock %}
