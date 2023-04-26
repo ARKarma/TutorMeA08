@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-%b7a3!0tmtb#m#d8n!)t_zjy!pvnfue2p@%g+n^djou^69wfii
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-SECURE_SSL_REDIRECT = True
+# SECURE_SSL_REDIRECT = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1', 'project-a-08.herokuapp.com']
 
@@ -79,16 +79,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "ProjectA08.wsgi.application"
-#SECURE_SSL_REDIRECT=True
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-# DATABASES = {
-#         'default':{
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / "db.sqlite3",
-#         }
-# }
 
 if 'pytest' in sys.modules or 'test' in sys.argv:
     DATABASES = {
