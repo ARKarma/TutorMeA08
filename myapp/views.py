@@ -147,13 +147,38 @@ def student_home(request):
 def tutor_home(request):
     logged_in_user = request.user
     email = logged_in_user.email
+    if (request.method == 'POST'):
+        cur_bookingid = request.POST.get('cur_booking')
+        cur_booking = Booking.objects.get(pk=cur_bookingid)
+        appointment_selection = request.POST.get('decision')
+        if (appointment_selection == "accept"):
+            cur_booking.booking_status = Booking.ACCEPTED
+        elif (appointment_selection == "reject"):
+            cur_booking.booking_status = Booking.DECLINED
+        cur_booking.save()
     try:
         current_user = AppUser.objects.get(pk=email)
-        if (current_user.user_role == AppUser.STUDENT):
-            return redirect('student_home.html')
     except AppUser.DoesNotExist:
-        return redirect('login.html')
-    return render(request, 'tutor_home.html', {'cur_User': current_user})
+        # Prob a better way to ensure safety; let's implement later
+        return render(request, 'current_sessions.html')
+    # Get all bookings
+    # Option to decline or accept if pending
+    try:
+        sessions = Session.objects.filter(tutor=logged_in_user)
+    except Session.DoesNotExist:
+        sessions = None
+    bookings = []
+    for session in sessions:
+        # Will need to make a check so that you can only have one booking per session
+        try:
+            bookingl = Booking.objects.filter(session=session)
+        except Booking.DoesNotExist:
+            bookingl = None
+        if (bookingl != None):
+            for booking in bookingl:
+                bookings.append(booking)
+
+    return render(request, 'current_sessions.html', {'cur_User': current_user, 'bookings': bookings})
 
 
 @login_required

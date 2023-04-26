@@ -1,59 +1,15 @@
 {% extends "myapp_base.html" %}
-{% block title %} Student Home {% endblock %}
+{% block title %} Tutor Home  {% endblock %}
 {% block content %}
-<section class="">
-    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
-        <div class="container">
-            <div class="row gx-lg-5 align-items-center">
-                <div class="col-lg-4 mb-5 mb-lg-0">
-                    <h1 class="my-5 display-3 fw-bold ls-tight">
-                        Welcome,<br/>
-                        <span class="text-primary"> {{cur_User.first_name}}</span>
-                    </h1>
-                    <div class="card">
-                        <div class="card-body py-5 px-md-5">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-8 mb-5 mb-lg-0">
-                    <div class="card">
-                        <div class="card-body py-5 px-md-5">
-                            {% for booking in bookings %}
-                            <li>
-                                <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for
-                                    {{booking.session.course.sub_and_cat}} at {{booking.session.date}} from
-                                    {{booking.session.start_time}}
-                                    to {{booking.session.end_time}} </p>
-                                <p> Their contact information is: {{booking.contact}} </p>
-                                {% if booking.booking_status == 'PENDING' %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="cur_booking" value="{{booking.id}}">
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="decision" id="accepted"
-                                               value="accept">
-                                        <label class="form-check-label" for="accepted">Accept Appointment</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="decision" id="rejected"
-                                               value="reject" checked>
-                                        <label class="form-check-label" for="rejected">Reject Appointment</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <button type="submit">Confirm Appointment Decision</button>
-                                    </div>
-                                </form>
-                                {% else %}
-                                <p> Status: {{booking.booking_status}}</p>
-                                {% endif %}
-                            </li>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
+    <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
+		<div class="card">
+			<div class="card-body py-5 px-md-3 text-center">
+                <h1> Welcome, Tutor {{cur_User.first_name}}</h1>
+                <a href ="{% url 'current-sessions'%}">
+                    Manage Sessions
+                </a>
             </div>
         </div>
     </div>
-</section>
+
 {% endblock %}
