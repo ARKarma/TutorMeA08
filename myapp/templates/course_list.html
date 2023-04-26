@@ -27,10 +27,14 @@
         {% for course in courses %}
         <div class="card mb-4 py-3 border-left-primary">
             <div class="card-body">
-            <li class="mb-3">
-                <h2 class="h4">{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
-                <a href="{% url 'sessions' course.pk %}" class="btn btn-primary">Click here for available sessions</a>
-            </li>
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="h4">{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
+                    </div>
+                    <div class="col-6">
+                        <a href="{% url 'sessions' course.pk %}" class="btn btn-primary">Click here for available sessions</a>
+                    </div>
+                </div>
             </div>
         </div>
         {% empty %}
