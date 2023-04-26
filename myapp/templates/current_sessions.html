@@ -3,7 +3,6 @@
 {% block content %}
 
 <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
-    <ul>
         {% for booking in bookings %}
         <li>
             <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for
@@ -31,7 +30,6 @@
             {% endif %}
         </li>
         {% endfor %}
-    </ul>
 </div>
 
 
