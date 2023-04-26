@@ -25,11 +25,13 @@
 
     <ul class="list-unstyled mt-4">
         {% for course in courses %}
-        <div class="border-primary rounded m-2">
+        <div class="card mb-4 py-3 border-left-primary">
+            <div class="card-body">
             <li class="mb-3">
                 <h2 class="h4">{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
                 <a href="{% url 'sessions' course.pk %}" class="btn btn-primary">Click here for available sessions</a>
             </li>
+            </div>
         </div>
         {% empty %}
         <p>No courses found.</p>
