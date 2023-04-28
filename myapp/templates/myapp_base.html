@@ -49,22 +49,20 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'home'%}">Home</a>
+                    <a class="btn btn-primary" href="{% url 'home'%}">Home</a>
                 </li>
                 {% if cur_User.user_role == 'TUTOR' %}
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'post-session'%}">Post Session</a>
+                    <a class="btn btn-primary" href="{% url 'post-session'%}">Post Session</a>
                 </li>
                 {% endif %}
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'course_list'%}">Search Classes</a>
+                    <a class="btn btn-primary"  href="{% url 'course_list'%}">Search Classes</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'calendar'%}">
-                        <button type="submit" class="btn btn-primary">Calendar</button>
-                    </a>
+                    <a class="btn btn-primary" href="{% url 'calendar'%}">Calendar</a>
                 </li>
 
                 <li class="nav-item">
@@ -76,7 +74,7 @@
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{% url 'login'%}">Log In</a>
+                    <a class="btn btn-primary" href="{% url 'login'%}">Log In</a>
                 </li>
                 {% endif %}
             </ul>
