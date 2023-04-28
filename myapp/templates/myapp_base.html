@@ -23,6 +23,7 @@
         return false;
       }
     }
+
     </script>
 
 </head>
@@ -54,14 +55,14 @@
                 </li>
 
                 <li class="nav-item">
-                      <form class="nav-link text-light" action="{% url 'calendar'%}" method="post">
-                        {% csrf_token %}
+                    <a class="nav-link text-light" href="{% url 'calendar'%}">
                         <button type="submit" class="btn btn-primary">Calendar</button>
-                    </form>
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <form class="nav-link text-light" action="{% url 'logout'%}" onsubmit="return logoutConfirm()" method="post">
+                    <form class="nav-link text-light" action="{% url 'logout'%}" onsubmit="return logoutConfirm()"
+                          method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Log Out</button>
                     </form>
