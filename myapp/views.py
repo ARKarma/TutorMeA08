@@ -152,7 +152,11 @@ def tutor_home(request):
             return redirect('student_home.html')
     except AppUser.DoesNotExist:
         return redirect('login.html')
-    return render(request, 'tutor_home.html', {'cur_User': current_user})
+    try:
+        cur_profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        return render(request, 'tutor_home.html', {'cur_User': current_user, 'no_Profile': True})
+    return render(request, 'tutor_home.html', {'cur_User': current_user, 'no_Profile': False})
 
 
 @login_required
@@ -216,7 +220,7 @@ def post_session(request):
     try:
         cur_profile= Profile.objects.get(user= request.user)
     except Profile.DoesNotExist:
-        redirect('tutor-home')
+        return redirect('tutor-home')
     if request.method == 'POST':
         req= request.POST
         courses= req.getlist('courses[]')
@@ -306,6 +310,7 @@ def profile(request):
     courses=Course.objects.all()
     try:
         cur_profile= Profile.objects.get(user=request.user)
+        cur_User= AppUser.objects.get(pk= request.user.email)
     except Profile.DoesNotExist:
         curUser= AppUser.objects.get(pk= request.user.email)
         cur_profile= Profile(appUser=curUser, user=request.user, about_me="Describe yourself")
@@ -320,4 +325,4 @@ def profile(request):
         coursesQuery= cur_profile.qualified_courses.all()
     except:
         coursesQuery= None
-    return render(request, 'profile.html', {'courses': courses, 'curProfile': cur_profile, 'coursesQuery': coursesQuery})
+    return render(request, 'profile.html', {'cur_User': cur_User,'courses': courses, 'curProfile': cur_profile, 'coursesQuery': coursesQuery})
