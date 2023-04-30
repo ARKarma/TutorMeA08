@@ -1,29 +1,48 @@
 {% extends "myapp_base.html" %}
 {% block title %} Make Choice {% endblock %}
 {% block content %}
-<!-- Contents Starts Here-->
-<ul>
-    <h2>{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h2>
+<div class="container">
+    <div class="my-4">
+        <h1>{{ course.subject }} {{ course.catalog_number }} {{ course.class_title }}</h1>
+    </div>
     {% for session in sessions %}
-    <li>
-        <h2>{{ session.tutor }} {{ session.desc }} {{ course.class_title }}</h2>
-        <p>Tutor: {{ session.tutor.first_name }} {{ session.tutor.last_name }}</p>
-        <p>Date: {{ session.date }}</p>
-        <p>Time: {{ session.start_time }} - {{ session.end_time }}</p>
-        <p>Description: {{ session.description }}</p>
-        <p>Hourly Rate: {{ session.price }}</p>
-        <form method="post" action="{% url 'book-session' session.id %}">
-            {% csrf_token %}
-            {% if user.is_authenticated %}
-            {% if cur_User.user_role == 'STUDENT' %}
-            <button type="submit" class="btn btn-success"> Book Session</button>
-            {% endif %}
-            {% endif %}
-        </form>
-    </li>
+    <div class="card mb-4 p-2 border-left-primary">
+        <div class="card-body">
+            <div>
+                <h3>
+                    <a href="{% url 'tutor' session.tutor.id %}" style="text-decoration:none;">Tutor: {{ session.tutor.first_name }} {{ session.tutor.last_name }} </a>
+                </h3>
+            </div>
+            <div class="ms-4">
+                <p>Date: {{ session.date }}</p>
+            </div>
+            <div class="ms-4">
+                <p>Time: {{ session.start_time }} - {{ session.end_time }}</p>
+            </div>
+            <div class="ms-4">
+                <p>Description: {{ session.description }}</p>
+            </div>
+            <div class="ms-4">
+                <p>Hourly Rate: {{ session.price }}</p>
+            </div>
+            <div class="row">
+                <div class="col-10">
+                </div>
+                <div class="col-2">
+                    <form method="post" action="{% url 'book-session' session.id %}">
+                        {% csrf_token %}
+                        {% if user.is_authenticated %}
+                        {% if cur_User.user_role == 'STUDENT' %}
+                        <button type="submit" class="btn btn-primary fixed-right"> Book Session</button>
+                        {% endif %}
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     {% empty %}
     <p>No sessions found.</p>
     {% endfor %}
-</ul>
-
+</div>
 {% endblock %}
