@@ -6,7 +6,7 @@ class SessionForm(forms.ModelForm):
 
     class Meta:
         model = Session
-        fields = ['course', 'description', 'price', 'date',
+        fields = ['description', 'price', 'date',
                   'start_time', 'end_time', 'max_students', ]
 
     course = forms.ModelChoiceField(

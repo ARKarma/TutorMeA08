@@ -10,10 +10,22 @@
             {% csrf_token %}
             <!-- Start Course Selection -->
             <div class="form-group m-1">
-                <label for="course">Course</label>
-                {{ form.course }}
-                <div>
-                    <small class="form-text text-muted">Please choose the class you are tutoring for </small>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Please choose the classes you are tutoring for
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" aria-required="true">
+                        {% for course in coursesQuery %}
+                        <li>
+                            <a class="dropdown-item">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{course.sub_and_cat}}" name= "courses[]" id="Check{{ forloop.counter }}" checked/>
+                                    <label class="form-check-label" for="Check{{ forloop.counter }}"> {{course.sub_and_cat}} </label>
+                                </div>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
             <!-- End Course Selection -->

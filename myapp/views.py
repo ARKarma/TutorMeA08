@@ -213,20 +213,21 @@ def current_appointments(request):
 
 @login_required
 def post_session(request):
+    try:
+        cur_profile= Profile.objects.get(user= request.user)
+    except Profile.DoesNotExist:
+        redirect('tutor-home')
     if request.method == 'POST':
-        form = SessionForm(request.POST)
-        if form.is_valid():
-            course = form.cleaned_data['course']
-            session = form.save(commit=False)
-            session.tutor = request.user
-            session.course = course
+        req= request.POST
+        courses= req.getlist('courses[]')
+        for course in courses:
+            cour= Course.objects.get(sub_and_cat=course)
+            session = Session(tutor= request.user, course= cour, description=req.get('description'), price=req.get('price'), date= req.get('date'), start_time= req.get('start_time'), end_time= req.get('end_time'), max_students=req.get('max_students'))
             session.save()
             messages.success(request, 'Session posted successfully.', fail_silently=True)
-            return redirect('tutor-home')
-    else:
-        form = SessionForm()
-
-    return render(request, 'post_session.html', {'form': form})
+        return redirect('tutor-home')
+    coursesQuery= cur_profile.qualified_courses.all()
+    return render(request, 'post_session.html', {'coursesQuery': coursesQuery})
 
 
 @login_required
