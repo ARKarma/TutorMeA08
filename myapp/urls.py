@@ -23,4 +23,5 @@ urlpatterns = [
     path('current-appointments/', views.current_appointments, name='current-appointments'),
     path('calendar/', views.CalendarView.as_view(), name='calendar'),
     path('profile/', views.profile, name='profile'),
+    path('tutor/<int:pk>/', views.tutor_profile, name='tutor'),
 ]

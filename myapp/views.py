@@ -1,21 +1,18 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import requests
-from myapp.models import Course
-from myapp.models import Session
-from myapp.models import Course, AppUser, Booking, Profile
+from myapp.models import *
 from django.db.models import Q
-from myapp.forms import SessionForm
-from django.contrib import *
+from myapp.forms import *
 from django.views import generic
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, Http404
 from myapp.forms import BookingForm
-from django.urls import reverse
 from datetime import datetime, date, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 import calendar
 from .utils import Calendar
 from django.utils.safestring import mark_safe
+from .models import Profile
 
 def fetch_courses():
     # courses = []
@@ -326,3 +323,13 @@ def profile(request):
     except:
         coursesQuery= None
     return render(request, 'profile.html', {'cur_User': cur_User,'courses': courses, 'curProfile': cur_profile, 'coursesQuery': coursesQuery})
+
+def tutor_profile(request, pk):
+    try:
+        profile = Profile.objects.get(pk=pk)
+        user = profile.user
+        print( profile.qualified_courses.all())
+    except Profile.DoesNotExist:
+        raise Http404("Tutor profile does not exist")
+    return render(request, 'tutor_profile.html', {'user': user, 'profile': profile})
+

@@ -1,0 +1,15 @@
+{% extends "myapp_base.html" %}
+{% block title %} {{ tutor.first_name }} {{ tutor.last_name }} {% endblock %}
+{% block content %}
+<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+<p>About Me: {{ profile.about_me }}</p>
+<h2>Qualified Courses:</h2>
+<ul>
+{% for course in profile.qualified_courses.all %}
+    <li>{{ course }}</li>
+{% empty %}
+    <li>No courses listed</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
