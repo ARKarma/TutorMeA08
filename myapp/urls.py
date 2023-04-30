@@ -22,4 +22,5 @@ urlpatterns = [
     path('current-sessions/', views.current_sessions, name='current-sessions'),
     path('current-appointments/', views.current_appointments, name='current-appointments'),
     path('calendar/', views.CalendarView.as_view(), name='calendar'),
+    path('profile/', views.profile, name='profile'),
 ]

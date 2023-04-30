@@ -76,3 +76,9 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.session}"
+
+class Profile(models.Model):
+    appUser= models.ForeignKey(AppUser, on_delete= models.CASCADE)
+    user= models.ForeignKey('auth.User', on_delete= models.CASCADE, primary_key=True)
+    about_me = models.TextField()
+    qualified_courses = models.ManyToManyField(Course, blank=True)

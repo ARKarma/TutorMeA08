@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 import requests
 from myapp.models import Course
 from myapp.models import Session
-from myapp.models import Course, AppUser, Booking
+from myapp.models import Course, AppUser, Booking, Profile
 from django.db.models import Q
 from myapp.forms import SessionForm
 from django.contrib import *
@@ -298,3 +298,25 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
+
+@login_required
+def profile(request):
+    #Make profile if it doesn't exist
+    courses=Course.objects.all()
+    try:
+        cur_profile= Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        curUser= AppUser.objects.get(pk= request.user.email)
+        cur_profile= Profile(appUser=curUser, user=request.user, about_me="Describe yourself")
+        cur_profile.save()
+    if request.method== 'POST':
+        form = request.POST
+        cur_profile.about_me= form.get('about')
+        cur_profile.qualified_courses.set(form.getlist('courses[]'))
+        cur_profile.save()
+        return redirect('tutor-home')
+    try:
+        coursesQuery= cur_profile.qualified_courses.all()
+    except:
+        coursesQuery= None
+    return render(request, 'profile.html', {'courses': courses, 'curProfile': cur_profile, 'coursesQuery': coursesQuery})

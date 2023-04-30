@@ -1,0 +1,57 @@
+{% extends "myapp_base.html" %}
+{% block title %} Profile {% endblock %}
+{% block content %}
+<!-- Contents Starts Here-->
+<div class="card">
+    <!-- Start Card Body -->
+    <div class="card-body">
+        <!-- Start Form -->
+        <form method="post" action="{% url 'profile' %}">
+            {% csrf_token %}
+            <!-- Start About Me -->
+            <div class="form-group m-1">
+                <textarea class="form-control" name="about" maxlength="1000">{{curProfile.about_me}}</textarea>
+            </div>
+            <!-- End About Me -->
+
+            <!-- Start Course Selection -->
+            <div class="form-group m-1">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Qualified Courses
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for course in courses %}
+                        <li>
+                            {% if course in coursesQuery %}
+                            <a class="dropdown-item">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{course.sub_and_cat}}" name= "courses[]" id="Check{{ forloop.counter }}" checked/>
+                                    <label class="form-check-label" for="Check{{ forloop.counter }}">{{course.sub_and_cat}}</label>
+                                </div>
+                            </a>
+                            {% else %}
+                            <a class="dropdown-item">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{course.sub_and_cat}}" name= "courses[]" id="Check{{ forloop.counter }}"/>
+                                    <label class="form-check-label" for="Check{{ forloop.counter }}">{{course.sub_and_cat}}</label>
+                                </div>
+                            </a>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <!-- End Course Selection -->
+
+            <!-- Start Submit Button -->
+            <button class="btn btn-primary btn-block col-lg-2 float-right" type="submit">Update About Me</button>
+            <!-- End Submit Button -->
+        </form>
+        <!-- End Form -->
+    </div>
+    <!-- End Card Body -->
+</div>
+
+{% endblock %}
