@@ -14,6 +14,7 @@ from .utils import Calendar
 from django.utils.safestring import mark_safe
 from .models import Profile
 
+
 def fetch_courses():
     # courses = []
     url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
@@ -215,19 +216,21 @@ def current_appointments(request):
 @login_required
 def post_session(request):
     try:
-        cur_profile= Profile.objects.get(user= request.user)
+        cur_profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         return redirect('tutor-home')
     if request.method == 'POST':
-        req= request.POST
-        courses= req.getlist('courses[]')
+        req = request.POST
+        courses = req.getlist('courses[]')
         for course in courses:
-            cour= Course.objects.get(sub_and_cat=course)
-            session = Session(tutor= request.user, course= cour, description=req.get('description'), price=req.get('price'), date= req.get('date'), start_time= req.get('start_time'), end_time= req.get('end_time'), max_students=req.get('max_students'))
+            cour = Course.objects.get(sub_and_cat=course)
+            session = Session(tutor=request.user, course=cour, description=req.get('description'),
+                              price=req.get('price'), date=req.get('date'), start_time=req.get('start_time'),
+                              end_time=req.get('end_time'), max_students=req.get('max_students'))
             session.save()
             messages.success(request, 'Session posted successfully.', fail_silently=True)
         return redirect('tutor-home')
-    coursesQuery= cur_profile.qualified_courses.all()
+    coursesQuery = cur_profile.qualified_courses.all()
     return render(request, 'post_session.html', {'coursesQuery': coursesQuery})
 
 
@@ -301,35 +304,38 @@ def next_month(d):
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
+
 @login_required
 def profile(request):
-    #Make profile if it doesn't exist
-    courses=Course.objects.all()
+    # Make profile if it doesn't exist
+    courses = Course.objects.all()
     try:
-        cur_profile= Profile.objects.get(user=request.user)
-        cur_User= AppUser.objects.get(pk= request.user.email)
+        cur_profile = Profile.objects.get(user=request.user)
+        cur_User = AppUser.objects.get(pk=request.user.email)
     except Profile.DoesNotExist:
-        curUser= AppUser.objects.get(pk= request.user.email)
-        cur_profile= Profile(appUser=curUser, user=request.user, about_me="Describe yourself")
+        curUser = AppUser.objects.get(pk=request.user.email)
+        cur_profile = Profile(appUser=curUser, user=request.user, about_me="Describe yourself")
         cur_profile.save()
-    if request.method== 'POST':
+        return redirect('profile')
+    if request.method == 'POST':
         form = request.POST
-        cur_profile.about_me= form.get('about')
+        cur_profile.about_me = form.get('about')
         cur_profile.qualified_courses.set(form.getlist('courses[]'))
         cur_profile.save()
         return redirect('tutor-home')
     try:
-        coursesQuery= cur_profile.qualified_courses.all()
+        coursesQuery = cur_profile.qualified_courses.all()
     except:
-        coursesQuery= None
-    return render(request, 'profile.html', {'cur_User': cur_User,'courses': courses, 'curProfile': cur_profile, 'coursesQuery': coursesQuery})
+        coursesQuery = None
+    return render(request, 'profile.html',
+                  {'cur_User': cur_User, 'courses': courses, 'curProfile': cur_profile, 'coursesQuery': coursesQuery})
+
 
 def tutor_profile(request, pk):
     try:
         profile = Profile.objects.get(pk=pk)
         user = profile.user
-        print( profile.qualified_courses.all())
+        print(profile.qualified_courses.all())
     except Profile.DoesNotExist:
         raise Http404("Tutor profile does not exist")
     return render(request, 'tutor_profile.html', {'user': user, 'profile': profile})
-

@@ -81,4 +81,5 @@ class Profile(models.Model):
     appUser= models.ForeignKey(AppUser, on_delete= models.CASCADE)
     user= models.ForeignKey('auth.User', on_delete= models.CASCADE, primary_key=True)
     about_me = models.TextField()
+    image = models.ImageField(upload_to='profile_images', null=True, blank=True)
     qualified_courses = models.ManyToManyField(Course, blank=True)
