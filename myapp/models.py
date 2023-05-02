@@ -82,3 +82,6 @@ class Profile(models.Model):
     user= models.ForeignKey('auth.User', on_delete= models.CASCADE, primary_key=True)
     about_me = models.TextField()
     qualified_courses = models.ManyToManyField(Course, blank=True)
+
+    def __str__(self):
+        return self.appUser + " " + self.user + " " + self.about_me
