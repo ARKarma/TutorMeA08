@@ -2,28 +2,25 @@
 {% block title %} Post Session {% endblock %}
 {% block content %}
 <!-- Contents Starts Here-->
-<div class="container">
+<div class="card">
     <!-- Start Card Body -->
-    <div class="card-body my-4">
+    <div class="card-body">
         <!-- Start Form -->
         <form method="post" action="{% url 'post-session' %}">
             {% csrf_token %}
             <!-- Start Course Selection -->
-            <div class="form-group m-2">
+            <div class="form-group m-1">
                 <div class="dropdown">
-                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Please choose the classes you are tutoring for
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Please choose the classes you are tutoring for
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" aria-required="true">
                         {% for course in coursesQuery %}
                         <li>
                             <a class="dropdown-item">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{course.sub_and_cat}}"
-                                           name="courses[]" id="Check{{ forloop.counter }}" checked/>
-                                    <label class="form-check-label" for="Check{{ forloop.counter }}">
-                                        {{course.sub_and_cat}} </label>
+                                    <input class="form-check-input" type="checkbox" value="{{course.sub_and_cat}}" name= "courses[]" id="Check{{ forloop.counter }}" checked/>
+                                    <label class="form-check-label" for="Check{{ forloop.counter }}"> {{course.sub_and_cat}} </label>
                                 </div>
                             </a>
                         </li>
@@ -34,7 +31,7 @@
             <!-- End Course Selection -->
 
             <!-- Start Input Description -->
-            <div class="form-group m-2">
+            <div class="form-group m-1">
                 <label for="description">Description</label>
                 <input type="text" class="form-control" id="description" name="description"
                        placeholder="Description for Session" required/>
@@ -43,7 +40,7 @@
             <!-- End Input Description -->
 
             <!-- Start Input Price -->
-            <div class="form-group m-2">
+            <div class="form-group m-1">
                 <label for="price">Hourly Rate</label>
                 <input type="number" class="form-control" id="price" name="price" placeholder="0.00" min="'0" step="0.5"
                        required/>
@@ -52,45 +49,35 @@
             <!-- End Input Price -->
 
             <!-- Start Input Date , Start Time and End Time -->
-            <div class="form-row m-2">
-
+            <div class="form-row m-1">
                 <!-- Start Input Date -->
-                <div class="form-group col-md-4 my-2">
+                <div class="form-group col-md-4">
                     <label for="date">Date</label>
                     <input type="date" class="form-control" id="date" name="date" required/>
-                    {% if date_error %}
-                    <div class="alert alert-danger my-2" role="alert">
-                        Date of session must be after today's date.
-                    </div>
-                    {% endif %}
+                    <small class="form-text text-muted">Please choose date for session.</small>
                 </div>
-
                 <!-- End Input Date -->
 
                 <!-- Start Input Start Time -->
-                <div class="form-group col-md-4 my-2">
+                <div class="form-group col-md-4">
                     <label for="start_time">Start Time</label>
                     <input type="time" class="form-control" id="start_time" name="start_time" required/>
+                    <small class="form-text text-muted">Please choose start time for session.</small>
                 </div>
                 <!-- End Input Start Time -->
 
                 <!-- Start Input End Time -->
-                <div class="form-group col-md-4 my-2">
+                <div class="form-group col-md-4">
                     <label for="end_time">End Time</label>
                     <input type="time" class="form-control" id="end_time" name="end_time" required/>
-
-                    {% if time_error %}
-                     <div class="alert alert-danger my-2" role="alert">
-                            Start time of session must be before end time.
-                     </div>
-                    {% endif %}
+                    <small class="form-text text-muted">Please choose end time for session.</small>
                 </div>
                 <!-- End Input End Time -->
             </div>
             <!-- End Input Date , Start Time and End Time -->
 
             <!-- Start Session Size -->
-            <div class="form-group col-md-4 m-2">
+            <div class="form-group col-md-4 m-1">
                 <label for="max_students">Class Size</label>
                 <input type="number" class="form-control" id="max_students" name="max_students" required/>
                 <small class="form-text text-muted">Please choose size for session.</small>
@@ -98,12 +85,7 @@
             <!-- End Session Size -->
 
             <!-- Start Submit Button -->
-            <div class="row">
-            <div class="col-10"></div>
-            <div class="col-2">
-            <button class="btn btn-primary float-right" type="submit">Post Session</button>
-            </div>
-            </div>
+            <button class="btn btn-primary btn-block col-lg-2 float-right" type="submit">Post Session</button>
             <!-- End Submit Button -->
         </form>
         <!-- End Form -->
