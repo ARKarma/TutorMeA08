@@ -84,4 +84,4 @@ class Profile(models.Model):
     qualified_courses = models.ManyToManyField(Course, blank=True)
 
     def __str__(self):
-        return self.appUser + " " + self.user + " " + self.about_me
+        return f"{self.appUser} {self.user} {self.about_me}"
