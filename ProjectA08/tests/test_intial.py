@@ -94,7 +94,7 @@ def test_9_post_session_fail():
     #assert response.status_code==200
     #Need to fix this test for modified post_session method
     assert True
-    
+
 
 @pytest.mark.django_db
 def test_11_student_session_view():
