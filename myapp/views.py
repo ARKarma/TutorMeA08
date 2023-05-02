@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import requests
@@ -215,22 +216,45 @@ def current_appointments(request):
 
 @login_required
 def post_session(request):
+
     try:
         cur_profile = Profile.objects.get(user=request.user)
+        coursesQuery = cur_profile.qualified_courses.all()
     except Profile.DoesNotExist:
         return redirect('tutor-home')
     if request.method == 'POST':
         req = request.POST
         courses = req.getlist('courses[]')
+
         for course in courses:
             cour = Course.objects.get(sub_and_cat=course)
+            dt = req.get('date')
+            st = req.get('start_time')
+            et = req.get('end_time')
+            today = date.today()
+
+            if dt < str(today) or st >= et:
+                date_error = False
+                time_error = False
+                if dt < str(today):
+                    date_error = True
+                if st >= et:
+                    time_error = True
+
+                context = {
+                    'coursesQuery': coursesQuery,
+                    'date_error': date_error,
+                    'time_error': time_error,
+                }
+                return render(request, 'post_session.html', context)
+
             session = Session(tutor=request.user, course=cour, description=req.get('description'),
                               price=req.get('price'), date=req.get('date'), start_time=req.get('start_time'),
                               end_time=req.get('end_time'), max_students=req.get('max_students'))
             session.save()
+
             messages.success(request, 'Session posted successfully.', fail_silently=True)
         return redirect('tutor-home')
-    coursesQuery = cur_profile.qualified_courses.all()
     return render(request, 'post_session.html', {'coursesQuery': coursesQuery})
 
 
