@@ -34,6 +34,8 @@ class AppUser(models.Model):
     email = models.CharField(max_length=320, primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    is_student = models.BooleanField(default=False, null=True)
+    is_student_true = models.BooleanField(default=False, null=True)
     STUDENT = 'STUDENT'
     TUTOR = 'TUTOR'
     USER_ROLE_CHOICES = [
@@ -82,6 +84,7 @@ class Profile(models.Model):
     user= models.ForeignKey('auth.User', on_delete= models.CASCADE, primary_key=True)
     about_me = models.TextField()
     qualified_courses = models.ManyToManyField(Course, blank=True)
+    image = models.ImageField(upload_to='profile_images', null=True, blank=True)
 
     def __str__(self):
         return f"{self.appUser} {self.user} {self.about_me}"
