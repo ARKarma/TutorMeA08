@@ -155,7 +155,12 @@ def tutor_home(request):
         cur_profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         return render(request, 'tutor_home.html', {'cur_User': current_user, 'no_Profile': True})
-    return render(request, 'tutor_home.html', {'cur_User': current_user, 'no_Profile': False})
+    my_param = request.GET.get('my_param')
+    context = {'my_param': my_param,
+               'cur_User': current_user,
+               'no_Profile': False,
+               }
+    return render(request, 'tutor_home.html', context)
 
 
 @login_required
@@ -254,7 +259,9 @@ def post_session(request):
             session.save()
 
             messages.success(request, 'Session posted successfully.', fail_silently=True)
-        return redirect('tutor-home')
+
+        my_params = "session_success"
+        return redirect('tutor-home'.format(my_params))
     return render(request, 'post_session.html', {'coursesQuery': coursesQuery})
 
 
@@ -346,7 +353,6 @@ def profile(request):
         cur_profile.about_me = form.get('about')
         cur_profile.qualified_courses.set(form.getlist('courses[]'))
         cur_profile.save()
-        return redirect('tutor-home')
     try:
         coursesQuery = cur_profile.qualified_courses.all()
     except:
