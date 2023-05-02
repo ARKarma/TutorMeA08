@@ -83,3 +83,6 @@ class Profile(models.Model):
     about_me = models.TextField()
     image = models.ImageField(upload_to='profile_images', null=True, blank=True)
     qualified_courses = models.ManyToManyField(Course, blank=True)
+
+    def __str__(self):
+        return f"{self.appUser} {self.user} {self.about_me}"
