@@ -59,11 +59,6 @@
                 <li class="nav-item">
                     <a class="btn btn-primary" href="{% url 'home'%}">Home</a>
                 </li>
-                {% if cur_User.user_role == 'TUTOR' %}
-                <li class="nav-item">
-                    <a class="btn btn-primary" href="{% url 'post-session'%}">Post Session</a>
-                </li>
-                {% endif %}
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="btn btn-primary" href="{% url 'course_list'%}">Search Classes</a>
@@ -72,6 +67,14 @@
                 <li class="nav-item">
                     <a class="btn btn-primary" href="{% url 'calendar'%}">Calendar</a>
                 </li>
+                {% if cur_User.user_role == 'TUTOR' %}
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="{% url 'post-session'%}">Post Session</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href="{% url 'profile'%}">Edit Profile</a>
+                </li>
+                {% endif %}
 
                 <li class="nav-item">
                     <a class="btn btn-primary" href="{% url 'logout'%}" onclick="return logoutConfirm()"> Log Out </a>
