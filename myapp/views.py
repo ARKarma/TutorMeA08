@@ -156,6 +156,7 @@ def tutor_home(request):
     except Profile.DoesNotExist:
         return render(request, 'tutor_home.html', {'cur_User': current_user, 'no_Profile': True})
     my_param = request.GET.get('my_param')
+    print(my_param)
     context = {'my_param': my_param,
                'cur_User': current_user,
                'no_Profile': False,
@@ -260,8 +261,8 @@ def post_session(request):
 
             messages.success(request, 'Session posted successfully.', fail_silently=True)
 
-        my_params = "session_success"
-        return redirect('tutor-home'.format(my_params))
+        my_param = "session_success"
+        return redirect('/tutor-home/?my_param={}'.format(my_param))
     return render(request, 'post_session.html', {'coursesQuery': coursesQuery})
 
 

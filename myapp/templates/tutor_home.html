@@ -4,6 +4,12 @@
     <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
 		<div class="card">
 			<div class="card-body py-5 px-md-3 text-center">
+                {% if my_param == "session_success" %}
+                <div class="alert alert-success" role="alert">
+                    You have successfully posted a Session!
+                </div>
+                {% endif %}
+
                 <h1> Welcome, Tutor {{cur_User.first_name}}</h1>
                 <a class="btn btn-primary" href ="{% url 'current-sessions'%}">
                     Manage Sessions
