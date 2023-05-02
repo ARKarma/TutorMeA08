@@ -155,19 +155,6 @@ def tutor_home(request):
         cur_profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         return render(request, 'tutor_home.html', {'cur_User': current_user, 'no_Profile': True})
-    my_param = request.GET.get('my_param')
-    print(my_param)
-    context = {'my_param': my_param,
-               'cur_User': current_user,
-               'no_Profile': False,
-               }
-    return render(request, 'tutor_home.html', context)
-
-
-@login_required
-def current_sessions(request):
-    logged_in_user = request.user
-    email = logged_in_user.email
     if (request.method == 'POST'):
         cur_bookingid = request.POST.get('cur_booking')
         cur_booking = Booking.objects.get(pk=cur_bookingid)
@@ -177,13 +164,7 @@ def current_sessions(request):
         elif (appointment_selection == "reject"):
             cur_booking.booking_status = Booking.DECLINED
         cur_booking.save()
-    try:
-        current_user = AppUser.objects.get(pk=email)
-    except AppUser.DoesNotExist:
-        # Prob a better way to ensure safety; let's implement later
-        return render(request, 'current_sessions.html')
-    # Get all bookings
-    # Option to decline or accept if pending
+
     try:
         sessions = Session.objects.filter(tutor=logged_in_user)
     except Session.DoesNotExist:
@@ -199,7 +180,14 @@ def current_sessions(request):
             for booking in bookingl:
                 bookings.append(booking)
 
-    return render(request, 'current_sessions.html', {'cur_User': current_user, 'bookings': bookings})
+    my_param = request.GET.get('my_param')
+    context = {'my_param': my_param,
+               'cur_User': current_user,
+               'no_Profile': False,
+               'bookings': bookings,
+               }
+
+    return render(request, 'tutor_home.html', context)
 
 
 @login_required

@@ -1,27 +1,85 @@
 {% extends "myapp_base.html" %}
 {% block title %} Tutor Home  {% endblock %}
 {% block content %}
-    <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
-		<div class="card">
-			<div class="card-body py-5 px-md-3 text-center">
-                {% if my_param == "session_success" %}
-                <div class="alert alert-success" role="alert">
-                    You have successfully posted a Session!
-                </div>
-                {% endif %}
+<section class="">
 
-                <h1> Welcome, Tutor {{cur_User.first_name}}</h1>
-                <a class="btn btn-primary" href ="{% url 'current-sessions'%}">
-                    Manage Sessions
-                </a>
-                <a class="btn btn-success" href ="{% url 'profile'%}">
-                    Edit Profile
-                </a>
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+        <div class="container">
+            {% if my_param == "session_success" %}
+            <div class="alert alert-success" role="alert">
+                You have successfully posted a Session!
             </div>
-            {% if no_Profile %}
-            <h2 class="card-body py-5 px-md-3 text-center">Don't forget to update your profile before posting sessions!</h2>
             {% endif %}
+
+            {% if no_Profile %}
+            <div class="alert alert-warning">Don't forget to update your profile before posting sessions!</div>
+            {% endif %}
+
+            <div class="row gx-lg-5 align-items-center">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h1 class="my-5 display-3 fw-bold ls-tight">
+                        Welcome,<br/>
+                        <span class="text-primary"> {{cur_User.first_name}}</span>
+                    </h1>
+                </div>
+
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <div class="card">
+                        <div class="card-body py-5 px-md-5">
+                            <div class="my-2">
+                                <h2> Appointment Status </h2>
+                            </div>
+                            <small class="form-text text-muted m-2"> Accepted sessions will be shown in Calendar </small>
+
+                            {% for booking in bookings %}
+                            {% if booking.booking_status == 'PENDING' %}
+                            <div class="border-start border-warning border-3 m-y p-2 float-left"
+                                 style="border-radius-success:5px">
+                                <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for
+                                    {{booking.session.course.sub_and_cat}} at {{booking.session.date}} from
+                                    {{booking.session.start_time}}
+                                    to {{booking.session.end_time}} </p>
+                                <p> Their contact information is: {{booking.contact}} </p>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="cur_booking" value="{{booking.id}}">
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="decision" id="accepted"
+                                               value="accept">
+                                        <label class="form-check-label" for="accepted">Accept Appointment</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="decision" id="rejected"
+                                               value="reject" checked>
+                                        <label class="form-check-label" for="rejected">Reject Appointment</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <button type="submit">Confirm Appointment Decision</button>
+                                    </div>
+                                </form>
+                            </div>
+                            {% else %}
+                            <div class="border-start border-success border-3 m-y p-2 float-left"
+                                 style="border-radius-success:5px">
+                                <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for
+                                    {{booking.session.course.sub_and_cat}} at {{booking.session.date}} from
+                                    {{booking.session.start_time}}
+                                    to {{booking.session.end_time}} </p>
+                                <p> Their contact information is: {{booking.contact}} </p>
+                                <p> Status: {{booking.booking_status}}</p>
+                            </div>
+                            {% endif %}
+                            {% empty %}
+                            <div class="alert alert-info my-5" role="alert">
+                                Haven't got any requests from student yet.
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</section>
 
 {% endblock %}
