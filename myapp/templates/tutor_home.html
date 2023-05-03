@@ -95,7 +95,7 @@
                             <div class="border-start border-warning border-3 m-y p-2 float-left"
                                  style="border-radius-success:5px">
                                 <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for
-                                    {{booking.session.course.sub_and_cat}} at {{booking.session.date}} from
+                                    {{booking.session.course.sub_and_cat}} at {{booking.session.date.date}} from
                                     {{booking.session.start_time}}
                                     to {{booking.session.end_time}} </p>
                                 <p> Their contact information is: {{booking.contact}} </p>
@@ -121,7 +121,7 @@
                             <div class="border-start border-success border-3 m-y p-2 float-left"
                                  style="border-radius-success:5px">
                                 <p> {{booking.first_name}} {{booking.last_name}} has scheduled an appointment for
-                                    {{booking.session.course.sub_and_cat}} at {{booking.session.date}} from
+                                    {{booking.session.course.sub_and_cat}} at {{booking.session.date.date}} from
                                     {{booking.session.start_time}}
                                     to {{booking.session.end_time}} </p>
                                 <p> Their contact information is: {{booking.contact}} </p>
