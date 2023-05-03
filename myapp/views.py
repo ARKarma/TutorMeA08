@@ -249,7 +249,7 @@ def post_session(request):
 
             session = Session(tutor=request.user, course=cour, description=req.get('description'),
                               price=req.get('price'), date=req.get('date'), start_time=req.get('start_time'),
-                              end_time=req.get('end_time'), max_students=req.get('max_students'))
+                              end_time=req.get('end_time'))
             session.save()
 
             messages.success(request, 'Session posted successfully.', fail_silently=True)
