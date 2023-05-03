@@ -1,6 +1,58 @@
 {% extends "myapp_base.html" %}
 {% block title %} Student Home {% endblock %}
 {% block content %}
+<style>
+    .card-footer {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+    }
+
+    .chat-page {
+        margin-top: 20px;
+    }
+
+    .chat-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .chat-list-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+    .chat-list-item:hover {
+        background-color: #f5f5f5;
+    }
+
+    .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+        background-color: #{{ chat.username|slice:":3" }}{{ chat.username|slice:"-3:" }};
+    }
+
+    .chat-username {
+        font-size: 18px;
+    }
+
+    .primary-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
 <section class="">
     <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
         <div class="container">
@@ -58,4 +110,18 @@
         </div>
     </div>
 </section>
+<div class="card-footer text-right">
+    <div class="container chat-page">
+        <h1 class="mb-4">Chats</h1>
+        <ul class="chat-list">
+            {% for chat in chats %}
+            <li class="chat-list-item" onclick="location.href='{% url 'chat' chat.id %}'">
+                <div class="avatar">{{ chat.username|first|upper }}</div>
+                <span class="chat-username">{{ chat.username }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <button class="primary-btn" onclick="location.href='{% url 'student_chats' %}'">View Chats</button>
+    </div>
+</div>
 {% endblock %}

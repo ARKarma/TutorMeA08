@@ -252,7 +252,8 @@ def post_session(request):
                               end_time=req.get('end_time'))
             session.save()
 
-            messages.success(request, 'Session posted successfully.', fail_silently=True)
+            messages.success(
+                request, 'Session posted successfully.', fail_silently=True)
 
         my_param = "session_success"
         return redirect('/tutor-home/?my_param={}'.format(my_param))
@@ -290,12 +291,13 @@ def booking_confirmation(request, course_id):
 class CalendarView(LoginRequiredMixin, generic.ListView):
     model = Booking
     template_name = 'calendar.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
             current_user = AppUser.objects.get(pk=self.request.user.email)
         except AppUser.DoesNotExist:
-            current_user= None
+            current_user = None
         # use today's month for the calendar
         d = get_date(self.request.GET.get('month', None))
 
@@ -307,7 +309,7 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
-        context['cur_User']= current_user
+        context['cur_User'] = current_user
         return context
 
 
@@ -418,3 +420,21 @@ def tutor_chats(request):
     chats_list = [User.objects.get(id=chat['sender']) for chat in chats]
 
     return render(request, 'tutor_chats.html', {'chats': chats_list})
+
+
+@login_required
+def student_chats(request):
+    logged_in_user = request.user
+    email = logged_in_user.email
+    try:
+        current_user = AppUser.objects.get(pk=email)
+        if current_user.user_role != AppUser.STUDENT:
+            return redirect('tutor_home')
+    except AppUser.DoesNotExist:
+        return redirect('login.html')
+
+    chats = MessageChat.objects.filter(
+        sender=request.user).values('receiver').distinct()
+    chats_list = [User.objects.get(id=chat['receiver']) for chat in chats]
+
+    return render(request, 'student_chats.html', {'chats': chats_list})
