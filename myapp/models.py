@@ -37,6 +37,7 @@ class AppUser(models.Model):
     last_name = models.CharField(max_length=100)
     STUDENT = 'STUDENT'
     TUTOR = 'TUTOR'
+    is_student =  models.BooleanField(default=False, null=True, blank=True)
     is_student_true = models.BooleanField(default=False, null=True, blank=True)
     USER_ROLE_CHOICES = [
         (STUDENT, 'Student'),
