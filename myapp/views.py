@@ -286,10 +286,12 @@ def booking_confirmation(request, course_id):
 class CalendarView(LoginRequiredMixin, generic.ListView):
     model = Booking
     template_name = 'calendar.html'
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        try:
+            current_user = AppUser.objects.get(pk=self.request.user.email)
+        except AppUser.DoesNotExist:
+            current_user= None
         # use today's month for the calendar
         d = get_date(self.request.GET.get('month', None))
 
@@ -301,6 +303,7 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
+        context['cur_User']= current_user
         return context
 
 
