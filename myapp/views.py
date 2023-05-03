@@ -217,6 +217,10 @@ def post_session(request):
         coursesQuery = cur_profile.qualified_courses.all()
     except Profile.DoesNotExist:
         return redirect('tutor-home')
+    try:
+        current_user = AppUser.objects.get(pk=request.user.email)
+    except AppUser.DoesNotExist:
+        return redirect('login.html')
     if request.method == 'POST':
         req = request.POST
         courses = req.getlist('courses[]')
@@ -252,7 +256,7 @@ def post_session(request):
 
         my_param = "session_success"
         return redirect('/tutor-home/?my_param={}'.format(my_param))
-    return render(request, 'post_session.html', {'coursesQuery': coursesQuery})
+    return render(request, 'post_session.html', {'coursesQuery': coursesQuery, 'cur_User': current_user})
 
 
 @login_required
@@ -286,10 +290,12 @@ def booking_confirmation(request, course_id):
 class CalendarView(LoginRequiredMixin, generic.ListView):
     model = Booking
     template_name = 'calendar.html'
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        try:
+            current_user = AppUser.objects.get(pk=self.request.user.email)
+        except AppUser.DoesNotExist:
+            current_user= None
         # use today's month for the calendar
         d = get_date(self.request.GET.get('month', None))
 
@@ -301,6 +307,7 @@ class CalendarView(LoginRequiredMixin, generic.ListView):
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
+        context['cur_User']= current_user
         return context
 
 
