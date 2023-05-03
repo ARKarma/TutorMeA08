@@ -214,6 +214,7 @@ def post_session(request):
         cur_profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         return redirect('tutor-home')
+
     if request.method == 'POST':
         req = request.POST
         courses = req.getlist('courses[]')
@@ -227,6 +228,7 @@ def post_session(request):
 
         my_param = "session_success"
         return redirect('/tutor-home/?my_param={}'.format(my_param))
+    coursesQuery = cur_profile.qualified_courses.all()
     return render(request, 'post_session.html', {'coursesQuery': coursesQuery})
 
 
