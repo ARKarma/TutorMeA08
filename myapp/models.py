@@ -86,6 +86,7 @@ class Profile(models.Model):
         'auth.User', on_delete=models.CASCADE, primary_key=True)
     about_me = models.TextField()
     qualified_courses = models.ManyToManyField(Course, blank=True)
+    image = models.ImageField(upload_to='profile_images', null=True, blank=True)
 
     def __str__(self):
         return f"{self.appUser} {self.user} {self.about_me}"
