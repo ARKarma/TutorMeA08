@@ -14,6 +14,8 @@ import calendar
 from .utils import Calendar
 from django.utils.safestring import mark_safe
 from .models import Profile
+
+
 def fetch_courses():
     # courses = []
     url = 'https://sisuva.admin.virginia.edu/psc/ihprd/UVSS/SA/s/WEBLIB_HCX_CM.H_CLASS_SEARCH.FieldFormula.IScript_ClassSearch?institution=UVA01&term=1232&acad_career=UGRD'
@@ -56,7 +58,8 @@ def course_list(request):
         subject_list = courses.filter(Q(subject__icontains=subject_query))
         courses = subject_list
     if catalog_query:
-        catalog_list = courses.filter(Q(catalog_number__icontains=catalog_query))
+        catalog_list = courses.filter(
+            Q(catalog_number__icontains=catalog_query))
         courses = catalog_list
     if title_query:
         title_list = courses.filter(Q(class_title__icontains=title_query))
@@ -209,15 +212,16 @@ def current_appointments(request):
 @login_required
 def post_session(request):
     try:
-        cur_profile= Profile.objects.get(user= request.user)
+        cur_profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         return redirect('tutor-home')
     if request.method == 'POST':
-        req= request.POST
-        courses= req.getlist('courses[]')
+        req = request.POST
+        courses = req.getlist('courses[]')
         for course in courses:
-            cour= Course.objects.get(sub_and_cat=course)
-            session = Session(tutor= request.user, course= cour, description=req.get('description'), price=req.get('price'), date= req.get('date'), start_time= req.get('start_time'), end_time= req.get('end_time'), max_students=req.get('max_students'))
+            cour = Course.objects.get(sub_and_cat=course)
+            session = Session(tutor=request.user, course=cour, description=req.get('description'), price=req.get('price'), date=req.get(
+                'date'), start_time=req.get('start_time'), end_time=req.get('end_time'), max_students=req.get('max_students'))
             session.save()
             messages.success(request, 'Session posted successfully.', fail_silently=True)
 
@@ -296,34 +300,89 @@ def next_month(d):
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
+
 @login_required
 def profile(request):
-    #Make profile if it doesn't exist
-    courses=Course.objects.all()
+    # Make profile if it doesn't exist
+    courses = Course.objects.all()
     try:
-        cur_profile= Profile.objects.get(user=request.user)
-        cur_User= AppUser.objects.get(pk= request.user.email)
+        cur_profile = Profile.objects.get(user=request.user)
+        cur_User = AppUser.objects.get(pk=request.user.email)
     except Profile.DoesNotExist:
-        curUser= AppUser.objects.get(pk= request.user.email)
-        cur_profile= Profile(appUser=curUser, user=request.user, about_me="Describe yourself")
+        curUser = AppUser.objects.get(pk=request.user.email)
+        cur_profile = Profile(
+            appUser=curUser, user=request.user, about_me="Describe yourself")
         cur_profile.save()
-    if request.method== 'POST':
+    if request.method == 'POST':
         form = request.POST
-        cur_profile.about_me= form.get('about')
+        cur_profile.about_me = form.get('about')
         cur_profile.qualified_courses.set(form.getlist('courses[]'))
         cur_profile.save()
     try:
-        coursesQuery= cur_profile.qualified_courses.all()
+        coursesQuery = cur_profile.qualified_courses.all()
     except:
-        coursesQuery= None
-    return render(request, 'profile.html', {'cur_User': cur_User,'courses': courses, 'curProfile': cur_profile, 'coursesQuery': coursesQuery})
+        coursesQuery = None
+    return render(request, 'profile.html', {'cur_User': cur_User, 'courses': courses, 'curProfile': cur_profile, 'coursesQuery': coursesQuery})
+
 
 def tutor_profile(request, pk):
     try:
         profile = Profile.objects.get(pk=pk)
         user = profile.user
-        print( profile.qualified_courses.all())
+        print(profile.qualified_courses.all())
     except Profile.DoesNotExist:
         raise Http404("Tutor profile does not exist")
     return render(request, 'tutor_profile.html', {'user': user, 'profile': profile})
 
+
+def chat(request, receiver_id):
+    receiver = User.objects.get(id=receiver_id)
+    messages = MessageChat.objects.filter(sender=request.user, receiver=receiver) | MessageChat.objects.filter(
+        sender=receiver, receiver=request.user)
+    messages = messages.order_by('timestamp')
+
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        message = MessageChat(sender=request.user,
+                              receiver=receiver, content=content)
+        message.save()
+        return redirect('chat', receiver_id=receiver_id)
+
+    return render(request, 'chat.html', {'receiver': receiver, 'messages': messages})
+
+
+def start_chat(request, user_id):
+    if request.user.is_authenticated:
+        app_user = AppUser.objects.get(email=request.user.email)
+        target_user = User.objects.get(id=user_id)
+
+        if app_user.is_student_true:
+            # If the authenticated user is a student, the target user is the tutor
+            tutor = target_user
+        else:
+            # If the authenticated user is a tutor, the target user is the student
+            tutor = request.user
+            target_user = User.objects.get(id=user_id)
+
+        # Pass the target user's ID as the receiver_id
+        return redirect('chat', receiver_id=target_user.id)
+    else:
+        return redirect('login')
+
+
+@login_required
+def tutor_chats(request):
+    logged_in_user = request.user
+    email = logged_in_user.email
+    try:
+        current_user = AppUser.objects.get(pk=email)
+        if current_user.user_role != AppUser.TUTOR:
+            return redirect('student_home')
+    except AppUser.DoesNotExist:
+        return redirect('login.html')
+
+    chats = MessageChat.objects.filter(
+        receiver=request.user).values('sender').distinct()
+    chats_list = [User.objects.get(id=chat['sender']) for chat in chats]
+
+    return render(request, 'tutor_chats.html', {'chats': chats_list})

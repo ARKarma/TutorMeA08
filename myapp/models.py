@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -36,6 +37,7 @@ class AppUser(models.Model):
     last_name = models.CharField(max_length=100)
     STUDENT = 'STUDENT'
     TUTOR = 'TUTOR'
+    is_student_true = models.BooleanField(default=False)
     USER_ROLE_CHOICES = [
         (STUDENT, 'Student'),
         (TUTOR, 'Tutor')
@@ -77,11 +79,25 @@ class Booking(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.session}"
 
+
 class Profile(models.Model):
-    appUser= models.ForeignKey(AppUser, on_delete= models.CASCADE)
-    user= models.ForeignKey('auth.User', on_delete= models.CASCADE, primary_key=True)
+    appUser = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        'auth.User', on_delete=models.CASCADE, primary_key=True)
     about_me = models.TextField()
     qualified_courses = models.ManyToManyField(Course, blank=True)
 
     def __str__(self):
         return f"{self.appUser} {self.user} {self.about_me}"
+
+
+class MessageChat(models.Model):
+    sender = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='receiver')
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender} - {self.receiver} - {self.timestamp}"

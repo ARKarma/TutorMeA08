@@ -23,4 +23,7 @@ urlpatterns = [
     path('calendar/', views.CalendarView.as_view(), name='calendar'),
     path('profile/', views.profile, name='profile'),
     path('tutor/<int:pk>/', views.tutor_profile, name='tutor'),
+    path('chat/<int:receiver_id>/', views.chat, name='chat'),
+    path('start-chat/<int:user_id>/', views.start_chat, name='start-chat'),
+    path('tutor-chats/', views.tutor_chats, name='tutor_chats'),
 ]

@@ -33,7 +33,15 @@
                         {% csrf_token %}
                         {% if user.is_authenticated %}
                         {% if cur_User.user_role == 'STUDENT' %}
-                        <button type="submit" class="btn btn-primary fixed-right"> Book Session</button>
+                        <button type="submit" class="btn btn-primary fixed-right mb-2"> Book Session</button>
+                        {% endif %}
+                        {% endif %}
+                    </form>
+                    <form method="get" action="{% url 'start-chat' session.tutor.id %}">
+                        {% csrf_token %}
+                        {% if user.is_authenticated %}
+                        {% if cur_User.user_role == 'STUDENT' %}
+                        <button type="submit" class="btn btn-secondary fixed-right"> Chat</button>
                         {% endif %}
                         {% endif %}
                     </form>

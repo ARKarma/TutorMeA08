@@ -1,13 +1,19 @@
 {% extends "myapp_base.html" %}
 {% block title %} Tutor Home  {% endblock %}
 {% block content %}
-<section class="">
-
-    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
-        <div class="container">
-            {% if my_param == "session_success" %}
-            <div class="alert alert-success" role="alert">
-                You have successfully posted a Session!
+    <div class="container-lg col-lg-6 mt-5 mb-5 mb-lg-0">
+        <div class="card">
+            <div class="card-body py-5 px-md-3 text-center">
+                <h1> Welcome, Tutor {{cur_User.first_name}}</h1>
+                <a class="btn btn-primary" href="{% url 'current-sessions' %}">
+                    Manage Sessions
+                </a>
+                <a class="btn btn-success" href="{% url 'profile' %}">
+                    Edit Profile
+                </a>
+                <a class="btn btn-info" href="{% url 'tutor_chats' %}">
+                    View Chats
+                </a>
             </div>
             {% endif %}
 
@@ -80,6 +86,10 @@
             </div>
         </div>
     </div>
+<<<<<<< Updated upstream
 </section>
 
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> Stashed changes
