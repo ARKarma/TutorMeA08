@@ -5,7 +5,7 @@
         <div class="card">
             <div class="card-body py-5 px-md-3 text-center">
                 <h1> Welcome, Tutor {{cur_User.first_name}}</h1>
-                <a class="btn btn-primary" href="{% url 'current-sessions' %}">
+                <a class="btn btn-primary" href="{% url 'current-appointments' %}">
                     Manage Sessions
                 </a>
                 <a class="btn btn-success" href="{% url 'profile' %}">
@@ -15,8 +15,6 @@
                     View Chats
                 </a>
             </div>
-            {% endif %}
-
             {% if no_Profile %}
             <div class="alert alert-warning">Don't forget to update your profile before posting sessions!</div>
             {% endif %}
@@ -86,10 +84,6 @@
             </div>
         </div>
     </div>
-<<<<<<< Updated upstream
 </section>
 
 {% endblock %}
-=======
-{% endblock %}
->>>>>>> Stashed changes
