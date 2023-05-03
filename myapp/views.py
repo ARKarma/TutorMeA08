@@ -350,6 +350,8 @@ def profile(request):
         cur_profile.about_me = form.get('about')
         cur_profile.qualified_courses.set(form.getlist('courses[]'))
         cur_profile.save()
+        my_param = "profile_success"
+        return redirect('/tutor-home/?my_param={}'.format(my_param))
     try:
         coursesQuery = cur_profile.qualified_courses.all()
     except:
