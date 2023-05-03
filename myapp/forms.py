@@ -7,7 +7,7 @@ class SessionForm(forms.ModelForm):
     class Meta:
         model = Session
         fields = ['description', 'price', 'date',
-                  'start_time', 'end_time', 'max_students', ]
+                  'start_time', 'end_time', ]
 
     course = forms.ModelChoiceField(
         queryset=Course.objects.all()
